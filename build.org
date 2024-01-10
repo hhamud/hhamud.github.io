@@ -1,0 +1,70 @@
+#+title: Build
+#+AUTHOR: Hamza Hamud
+#+EMAIL: self@hamzahamud.com
+#+DATE: [2024-01-10 Thu]
+#+DESCRIPTION: Emacs Lisp configuration for blog publishing
+#+KEYWORDS: emacs, blog, publishing, org-mode
+#+LANGUAGE: en
+#+OPTIONS: toc:nil
+#+PROPERTY: header-args :tangle build.el
+
+
+Load the publishing system
+#+begin_src emacs-lisp
+(require 'package)
+(setq package-user-dir (expand-file-name "./.packages"))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+#+end_src
+
+
+Initialise the package system
+#+begin_src emacs-lisp
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+#+end_src
+
+Install dependencies
+#+begin_src emacs-lisp
+(package-install 'htmlize)
+#+end_src
+
+
+Load the publishing system
+#+begin_src emacs-lisp
+(require 'ox-publish)
+#+end_src
+
+
+Customize the HTML output
+#+begin_src emacs-lisp
+(setq org-html-validation-link nil            ;; Don't show validation link
+      org-html-head-include-scripts nil       ;; Use our own scripts
+      org-html-head-include-default-style nil ;; Use our own styles
+      org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
+#+end_src
+
+
+Define the publishing project
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+      (list
+       (list "org-site:main"
+             :recursive t
+             :base-directory "./content"
+             :publishing-function 'org-html-publish-to-html
+             :publishing-directory "./public"
+             :with-author nil           ;; Don't include author name
+             :with-creator t            ;; Include Emacs and Org versions in footer
+             :with-toc t                ;; Include a table of contents
+             :section-numbers nil       ;; Don't include section numbers
+             :time-stamp-file nil)))    ;; Don't include time stamp in file
+#+end_src
+
+Generate the site output
+#+begin_src emacs-lisp
+(org-publish-all t)
+#+end_src
+
+
