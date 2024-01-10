@@ -37,29 +37,54 @@ Load the publishing system
 #+end_src
 
 
-Customize the HTML output
+Customise the HTML output by using our own scripts and styles without showing our validations links
 #+begin_src emacs-lisp
-(setq org-html-validation-link nil            ;; Don't show validation link
-      org-html-head-include-scripts nil       ;; Use our own scripts
-      org-html-head-include-default-style nil ;; Use our own styles
+(setq org-html-validation-link nil
+      org-html-head-include-scripts nil
+      org-html-head-include-default-style nil
       org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
 #+end_src
 
 
+
+This function was created as a wrapper around ~org-html-publish-to-html~ to filter out any files that do not have the tag =#+SELECT_TAGS: publish=.
+#+begin_src emacs-lisp
+(defun my/org-publish (plist filename pub-dir)
+  "Publish the file only if it contains the line '#+SELECT_TAGS: publish'."
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (goto-char (point-min))
+    (if (re-search-forward "^#\\+SELECT_TAGS:.*\\bpublish\\b.*$" nil t)
+        (org-html-publish-to-html plist filename pub-dir)
+      (message "Skipping file not marked for publishing: %s" filename))))
+
+#+end_src
+
+Set the base directory for the files to be published from.
+#+begin_src emacs-lisp
+(setq org-base-directory "~/Documents/org/info")
+#+end_src
+
 Define the publishing project
+- Include a table of contents
+- Don't include author name
+- Don't Include Emacs and Org versions in footer
+- Don't include section numbers
+- Don't include time stamp in file
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
       (list
        (list "org-site:main"
-             :recursive t
-             :base-directory "./content"
-             :publishing-function 'org-html-publish-to-html
+             :recursive nil
+             :base-directory org-base-directory
+             :publishing-function 'my/org-publish
              :publishing-directory "./public"
-             :with-author nil           ;; Don't include author name
-             :with-creator t            ;; Include Emacs and Org versions in footer
-             :with-toc t                ;; Include a table of contents
-             :section-numbers nil       ;; Don't include section numbers
-             :time-stamp-file nil)))    ;; Don't include time stamp in file
+             :with-author nil
+             :with-creator nil
+             :with-toc t
+             :section-numbers nil
+             :time-stamp-file nil
+             )))
 #+end_src
 
 Generate the site output
