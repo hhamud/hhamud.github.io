@@ -192,8 +192,7 @@ h6:before {
 li {
   position: relative;
   display: block;
-  padding-left: 34px;
-  padding-left: 4ch;
+  padding-left: 15px;
 }
 li:after {
   position: absolute;
