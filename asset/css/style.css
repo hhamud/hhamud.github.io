@@ -192,12 +192,15 @@ h6:before {
 li {
   position: relative;
   display: block;
-  padding-left: 15px;
+  padding-left: 30px;
 }
 li:after {
   position: absolute;
   top: 0;
   left: 0;
+}
+ul {
+  padding: 0
 }
 ul > li:after {
   content: "*";
@@ -272,4 +275,28 @@ hr:after {
 }
 .markdown-ones ol > li:after {
   content: "1.";
+}
+
+/* footnotes */
+
+.footnotes {
+  border-top: 2px solid black;
+  padding-top: 10px;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.footnote-link {
+  display: inline-block; /* or 'inline' depending on your specific needs */
+  vertical-align: super;
+  font-size: smaller;
+}
+
+/* Assuming .footpara is your paragraph class */
+.footpara {
+  display: inline; /* or 'inline-block' if the paragraph is short and you want the footnote to be on the same line */
+}
+
+.footdef {
+  margin: 15px
 }

@@ -35,7 +35,6 @@ Load the publishing system
 (require 'ox-publish)
 #+end_src
 
-
 Set the HTML-HEAD
 #+begin_src emacs-lisp
 (setq set-css "<link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/><link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/><script src=\"/asset/js/prism.js\"></script>")
@@ -102,28 +101,22 @@ Customise the HTML output by using our own scripts and styles without showing ou
 #+end_src
 
 
-This function was created as a wrapper around ~org-html-publish-to-html~ to filter out any files that do not have the tag =#+SELECT_TAGS: publish=.
+This is a wrapper function editing the original ~org-publish-to-html~ function
 #+begin_src emacs-lisp
 (defun my/org-publish (plist filename pub-dir)
   "Publish the file only if it contains the line '#+SELECT_TAGS: publish'."
-  (with-temp-buffer
-    (insert-file-contents filename)
-    (goto-char (point-min))
-    (if (re-search-forward "^#\\+SELECT_TAGS:.*\\bpublish\\b.*$" nil t)
-
         (org-publish-org-to 'site-html filename
                             (concat (when (> (length org-html-extension) 0) ".")
                                     (or (plist-get plist :html-extension)
                                         org-html-extension
                                         "html"))
-                            plist pub-dir)
-      (message "Skipping file not marked for publishing: %s" filename))))
+                            plist pub-dir))
 #+end_src
 
 
 Set the base directory for the files to be published from.
 #+begin_src emacs-lisp
-(setq org-base-directory "~/Documents/org/info")
+(setq org-base-directory "./content")
 #+end_src
 
 
@@ -141,11 +134,12 @@ Define the publishing project
              :base-directory org-base-directory
              :publishing-function 'my/org-publish
              :publishing-directory "./public"
-             :author "Hamza Hamud"
+             :with-email nil
              :auto-sitemap t
              :sitemap-title "Posts"
              :sitemap-filename "index.org"
              :with-creator t
+             :with-author nil
              :with-toc t
              :section-numbers nil
              :time-stamp-file nil)
