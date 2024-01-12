@@ -300,3 +300,55 @@ hr:after {
 .footdef {
   margin: 15px
 }
+
+
+/* NavBar */
+
+/* Styles for the entire navbar */
+.navbar {
+  overflow: hidden; /* Ensures the navbar does not overflow */
+}
+
+/* Styles for the list inside the navbar */
+.navbar ul {
+  list-style-type: none; /* Removes bullet points */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  display: flex; /* Aligns items in a row */
+  justify-content: center; /* Centers the items horizontally */
+}
+
+/* Styles for each list item */
+.navbar li {
+  float: left; /* Floats each list item to the left */
+}
+
+/* remove the bullet list */
+.navbar ul > li:after {
+  content: none;
+}
+
+/* Styles for links in the navbar */
+.navbar a {
+  display: block; /* Makes the entire area clickable */
+  color: black; /* White text color */
+  text-align: center; /* Centers text */
+  padding: 14px 16px; /* Padding around the text */
+  text-decoration: none; /* Removes underline from links */
+}
+
+.navbar a:hover, .navbar a:visited:hover {
+  background-color: white;
+  color: #3297d3;
+}
+
+.intro p {
+  display: flex;
+  justify-content: center;
+}
+
+
+.intro h1 {
+  display: flex;
+  justify-content: center;
+}
