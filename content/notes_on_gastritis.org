@@ -1,0 +1,104 @@
+:PROPERTIES:
+:ID: 622476EA-3BC4-4DE0-ADDE-E3019B862BDB
+:END:
+#+title: Notes on Gastritis
+
+** Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+My journey into studying gastroenterology started with a suprising conversation with a gastroenterologist that assured me that long term use of proton pump inhibitors[fn:1] was safe and that many of his patients have had no problem with them. This contradicted warnings against prolonged use mentioned in patient information leaflets of these class of medications. There is also significant evidence contrary to the case showing increased risk of [[https://www.bmj.com/content/344/bmj.e372][hip fracturs]], [[https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2481157#ioi150096r1][chronic kidney disease]], [[http://gut.bmj.com/content/early/2015/12/30/gutjnl-2015-310861.abstract][disrupted bacterial balance]], [[https://www.sciencedirect.com/science/article/pii/S2049080122015229][nutritional deficiencies]] and [[https://jamanetwork.com/journals/jamaneurology/fullarticle/2487375][dementia]].
+
+This inconsistency made me question the conventional approach to treating stomach inflammation and inspired me to explore this topic further. In this series, we'll delve into various gastroenterology topics, starting with an overview of gastritis, its causes, symptoms, and treatments.
+** What is Gastritis?
+:PROPERTIES:
+:CUSTOM_ID: what-is-gastritis
+:END:
+
+Gastritis, a common yet often misunderstood condition which affects a significant portion of the population. This inflammation of the stomach lining can lead to various symptoms and, if left untreated can cause serious complications.
+
+There are two types of gastritis:
+- *Acute Gastritis*
+- *Chronic Gastritis*
+
+*** Acute Gastritis
+:PROPERTIES:
+:CUSTOM_ID: acute-gastritis
+:END:
+Acute gastritis is often characterized by a marked infiltration of neutrophilic leukocytes[fn:2] in the stomach's lining. This condition typically results from infections caused by invasive organisms[fn:3].
+
+One specific and severe form is phlegmonous (or suppurative[fn:4]) gastritis. This type infects the deeper layers of the stomach, namely the submucosa and muscularis propria, while usually sparing the innermost layer, the mucosa.
+
+Despite its severity, phlegmonous gastritis is relatively rare. However, its rarity contributes to a significant challenge: it is often diagnosed late due to its non-specific symptoms, leading to a high fatality rate of 70%. Given its complexity and rarity, a detailed discussion on this specific gastritis type extends beyond the scope of this overview.
+
+*** Chronic Gastritis
+:PROPERTIES:
+:CUSTOM_ID: chronic-gastritis
+:END:
+
+Chronic gastritis, a common form of gastritis, is characterized by the presence of both neutrophils and chronic inflammatory cells within the
+stomach lining. A key aspect of chronic gastritis is its role as a risk factor for other serious conditions. Notably, it is associated with an increased risk of Peptic Ulcer Disease (PUD) and various gastric neoplasms, including adenocarcinoma and lymphoma. Additionally, there is a subset known as non-Helicobacter pylori gastritis. The exact cause of this type of gastritis remains largely unknown in many cases, presenting a challenge in both understanding and managing the condition.
+
+*** Symptoms and Diagnosis of Chronic Gastritis
+:PROPERTIES:
+:CUSTOM_ID: symptoms-and-diagnosis-of-chronic-gastritis
+:END:
+
+Symptoms of gastritis can range from mild to severe and include abdominal pain, bloating, nausea, vomiting, and indigestion. In chronic cases, loss of appetite, weight loss, and gastrointestinal bleeding may occur. Diagnosis typically involves a review of medical history, physical examination, and may include endoscopy, blood tests, stool tests, or breath tests to identify H. pylori infection, which is the most common cause of chronic gastritis.
+
+*** Causes of Chronic Gastritis
+:PROPERTIES:
+:CUSTOM_ID: causes-of-chronic-gastritis
+:END:
+
+Several factors can lead to the development of gastritis:
+
+- *Infections*: Helicobacter pylori, Mycobacteria, Actinomycosis,
+  Syphilis, HHV5 (Human Herpesvirus 5 in immuno-compromised),
+  Candidiasis, and parasitic infections like Anisakidosis, Ascariasis,
+  Necatoriasis, and Capillariasis.
+- *Lifestyle Factors*: Excessive alcohol consumption, smoking, and
+  chronic stress.
+- *Medications*: Prolonged use of NSAIDs (nonsteroidal anti-inflammatory
+  drugs).
+- *Autoimmune Disorders*: In some cases, the body's immune system
+  attacks stomach cells.
+- *Other Causes*: Include bile reflux, infections, and certain diseases
+  like Crohn's.
+
+*** Treatment and Management of Chronic Gastritis
+:PROPERTIES:
+:CUSTOM_ID: treatment-and-management-of-chronic-gastritis
+:END:
+
+The treatment of gastritis depends on its cause:
+-  *Eradicating H.pylori*: If caused by H. pylori, antibiotics and proton pump inhibitors are used.
+-  *Medication Adjustments*: If drug-induced, alternatives to
+NSAIDs may be recommended.
+- *Lifestyle Changes*: Reducing alcohol intake, quitting smoking, and managing stress.
+- *Dietary Adjustments*: Avoiding spicy, acidic, or fried foods can alleviate symptoms.
+
+In more severe cases, additional medical interventions may be necessary and is highly dependent on the underlying cause if it can be identified. There are other proposed treatments such as [[https://pubmed.ncbi.nlm.nih.gov/22932084/]["gastroprotective" agents]].
+
+** Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+
+Gastritis, though common, can be effectively managed with the right approach. Understanding its causes, recognizing symptoms early, and adhering to treatment plans are key. Through lifestyle adjustments and medical interventions, individuals can lead a healthy, symptom-free life with careful management of their lifestyle.
+
+[fn:1] Proton pump inhibitors are medications that are used to reduce
+     stomach acid production. They do so by irreversibly inhibiting
+       the proton pump in the stomach. These class of medications are
+       also one of the most commonly prescribed medications in the
+       world.
+
+[fn:2] Neutrophilic leukocytes are a type of white blood cell and are
+       part of the body's immune response that is often recruited to
+       sites of inflammation or infection.
+
+[fn:3] These invasive organisms have been identified as including
+       gram-negative bacilli, anerobes, gram-positive cocci including
+       group A streptocci and fungi.
+
+[fn:4] meaning pus filled and implying that there is a severe infection.

@@ -1,0 +1,38 @@
+:PROPERTIES:
+:ID: A8DFBB37-08B3-4854-8F63-85D6361844D4
+:END:
+#+title: How to create a Clojure Monorepo
+
+
+Suppose that you want to create a basic clojure monorepo without using large frameworks such as [[https://opensource.google/projects/bazel][Bazel]] or [[https://github.com/polyfy/polylith][Polylith]], then this is what you would do.
+
+Assuming that you have a basic monorepo setup as so. /I've removed most
+of the files typically associated in a clojure project setup for clarity
+purposes/:
+
+#+begin_src shell
+.
+|____deps.edn
+|____modules
+| |____lib1
+| | |____deps.edn
+| |____lib2
+| | |____deps.edn
+#+end_src
+
+The root deps.edn file should have in its dependencies each library or
+project referenced.
+
+#+begin_src clojure
+ :deps {modules/lib1 {:local/root "modules/lib3"}
+        modules/lib3 {:local/root "modules/lib3"}}
+#+end_src
+
+Each library in your monorepo should include any of the local libraries
+that it is using in its deps.edn file as shown in the below example.
+
+#+begin_src clojure
+ :deps { modules/lib1 {:local/root "../lib1"}
+#+end_src
+
+That is how you have a quick and basic clojure monorepo setup.

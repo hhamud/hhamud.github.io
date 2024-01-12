@@ -1,0 +1,61 @@
+:PROPERTIES:
+:ID: E25E3021-8B4E-4A61-A9E3-C7C2E9D6B247
+:END:
+#+title: Notes on Tree-sitter
+
+** Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+I decided to sit down and write a [[https://github.com/hhamud/tree-sitter-noir][tree-sitter plugin]] and [[https://github.com/hhamud/noir-ts-mode][Emacs mode]] for both tree-sitter and [[https://github.com/hhamud/noir-mode][non tree-sitter mode]] for the Noir language.
+
+The Noir language is a smart contract DSL specifically made for writing smart contracts that are compiled down to zero knowledge circuits and then executed on a backend which currently uses [[https://github.com/aztecprotocol/barretenburg][barretenburg]] and in the future will use different proving backends such as bulletproofs, etc.
+
+At the heart of this endeavor lies [[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]], a versatile open-source project designed for robust code parsing. Developed by Max Brunsfeld, Tree-sitter plays a pivotal role in code navigation, syntax highlighting, and much more within code editors. For a comprehensive understanding, I highly recommend watching this insightful [[https://www.youtube.com/watch?v=Jes3bD6P0To&ab_channel=GitHubSatellite][presentation]] that delves deep into Tree-sitter's capabilities.
+
+The rest of the blog is dedicated to a few tricks that I picked up on the way that can help you develop your own parser after having made my
+own mistakes.
+
+** Quick Tips:
+:PROPERTIES:
+:CUSTOM_ID: quick-tips
+:END:
+
+Place this at the top of your grammar.js file to enable using Microsoft's excellent typescript LSP server.This will allow your editor to provide type checking and autocompletion, which can be very handy when working with Tree-sitter's API.
+
+ #+begin_src javascript
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
+#+end_src
+
+If the language that you are writing the syntax for is similiar to any other language that already has a tree-sitter plugin created, then you can inherit that as follows:
+
+#+begin_src javascript
+const C = require('tree-sitter-c/grammar');
+
+module.exports = grammar(C, {
+  name: 'cpp',
+
+  externals: $ => [
+    $.raw_string_delimiter,
+    $.raw_string_content,
+  ],
+  
+  ...
+}
+#+end_src
+
+I also suggest using the Prettier code formatter tool as it will help de-clutter the file and allow you to only worry about the code structure itself.
+
+Here are the settings that I have used:
+#+begin_src javascript
+{
+  "arrowParens": "always",
+  "semi": false,
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 60
+}
+#+end_src
+
+In conclusion, Tree-sitter is a powerful tool for parsing source code in a robust and efficient manner. Writing a grammar might seem like a daunting task, but with a good understanding of the parsing algorithm and the help of some handy tools, it becomes a lot more manageable.
