@@ -1,5 +1,0 @@
-#+TITLE: 
-
-- [[file:clojure_monorepo.org][How to create a Clojure Monorepo]]
-- [[file:notes_on_gastritis.org][Notes on Gastritis]]
-- [[file:tree-sitter.org][Notes on Tree-sitter]]
