@@ -352,3 +352,7 @@ hr:after {
   display: flex;
   justify-content: center;
 }
+
+.intro span {
+  margin-bottom: 10px;
+}
