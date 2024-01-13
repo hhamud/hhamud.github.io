@@ -146,7 +146,7 @@ Define the publishing project
              :time-stamp-file nil)
        (list "pages"
              :recursive nil
-             :exclude "README.org"
+             :exclude "README.org\\|build.org"
              :base-directory "./"
              :publishing-function 'my/org-publish
              :publishing-directory "./public/"
