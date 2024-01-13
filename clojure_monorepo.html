@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to create a Clojure Monorepo</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/asset/css/style.css"/><link rel="stylesheet" href="/asset/css/prism.css"/><script src="/asset/js/prism.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">How to create a Clojure Monorepo</h1>
+<p>
+Suppose that you want to create a basic clojure monorepo without using large frameworks such as <a href="https://opensource.google/projects/bazel">Bazel</a> or <a href="https://github.com/polyfy/polylith">Polylith</a>, then this is what you would do.
+</p>
+
+<p>
+Assuming that you have a basic monorepo setup as so. <i>I've removed most
+of the files typically associated in a clojure project setup for clarity
+purposes</i>:
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-shell">.
+|____deps.edn
+|____modules
+| |____lib1
+| | |____deps.edn
+| |____lib2
+| | |____deps.edn
+</code></pre>
+</div>
+
+<p>
+The root deps.edn file should have in its dependencies each library or
+project referenced.
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-clojure">:deps {modules/lib1 {:local/root "modules/lib3"}
+       modules/lib3 {:local/root "modules/lib3"}}
+</code></pre>
+</div>
+
+<p>
+Each library in your monorepo should include any of the local libraries
+that it is using in its deps.edn file as shown in the below example.
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-clojure">:deps { modules/lib1 {:local/root "../lib1"}
+</code></pre>
+</div>
+
+<p>
+That is how you have a quick and basic clojure monorepo setup.
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+</div>
+</body>
+</html>

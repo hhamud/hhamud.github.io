@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notes on Tree-sitter</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/asset/css/style.css"/><link rel="stylesheet" href="/asset/css/prism.css"/><script src="/asset/js/prism.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Notes on Tree-sitter</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#quick-tips">Quick Tips:</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-introduction" class="outline-2">
+<h2 id="introduction">Introduction</h2>
+<div class="outline-text-2" id="text-introduction">
+<p>
+I decided to sit down and write a <a href="https://github.com/hhamud/tree-sitter-noir">tree-sitter plugin</a> and <a href="https://github.com/hhamud/noir-ts-mode">Emacs mode</a> for both tree-sitter and <a href="https://github.com/hhamud/noir-mode">non tree-sitter mode</a> for the Noir language.
+</p>
+
+<p>
+The Noir language is a smart contract DSL specifically made for writing smart contracts that are compiled down to zero knowledge circuits and then executed on a backend which currently uses <a href="https://github.com/aztecprotocol/barretenburg">barretenburg</a> and in the future will use different proving backends such as bulletproofs, etc.
+</p>
+
+<p>
+At the heart of this endeavor lies <a href="https://tree-sitter.github.io/tree-sitter/">Tree-sitter</a>, a versatile open-source project designed for robust code parsing. Developed by Max Brunsfeld, Tree-sitter plays a pivotal role in code navigation, syntax highlighting, and much more within code editors. For a comprehensive understanding, I highly recommend watching this insightful <a href="https://www.youtube.com/watch?v=Jes3bD6P0To&amp;ab_channel=GitHubSatellite">presentation</a> that delves deep into Tree-sitter's capabilities.
+</p>
+
+<p>
+The rest of the blog is dedicated to a few tricks that I picked up on the way that can help you develop your own parser after having made my
+own mistakes.
+</p>
+</div>
+</div>
+
+<div id="outline-container-quick-tips" class="outline-2">
+<h2 id="quick-tips">Quick Tips:</h2>
+<div class="outline-text-2" id="text-quick-tips">
+<p>
+Place this at the top of your grammar.js file to enable using Microsoft's excellent typescript LSP server.This will allow your editor to provide type checking and autocompletion, which can be very handy when working with Tree-sitter's API.
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-javascript"><span style="font-weight: bold; font-style: italic;">/// </span><span style="font-weight: bold; font-style: italic;">&lt;reference types="tree-sitter-cli/dsl" /&gt;</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">@ts-check</span>
+</code></pre>
+</div>
+
+<p>
+If the language that you are writing the syntax for is similiar to any other language that already has a tree-sitter plugin created, then you can inherit that as follows:
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-javascript"><span style="font-weight: bold;">const</span> <span style="font-weight: bold; font-style: italic;">C</span> = require(<span style="font-style: italic;">'tree-sitter-c/grammar'</span>);
+
+module.exports = grammar(C, {
+  name: <span style="font-style: italic;">'cpp'</span>,
+
+  externals: $ =&gt; [
+    $.raw_string_delimiter,
+    $.raw_string_content,
+  ],
+
+  ...
+}
+</code></pre>
+</div>
+
+<p>
+I also suggest using the Prettier code formatter tool as it will help de-clutter the file and allow you to only worry about the code structure itself.
+</p>
+
+<p>
+Here are the settings that I have used:
+</p>
+<div class="org-src-container">
+<pre><code class="src language-javascript">{
+  <span style="font-style: italic;">"arrowParens"</span>: <span style="font-style: italic;">"always"</span>,
+  <span style="font-style: italic;">"semi"</span>: <span style="font-weight: bold; text-decoration: underline;">false</span>,
+  <span style="font-style: italic;">"useTabs"</span>: <span style="font-weight: bold; text-decoration: underline;">false</span>,
+  <span style="font-style: italic;">"tabWidth"</span>: 2,
+  <span style="font-style: italic;">"printWidth"</span>: 60
+}
+</code></pre>
+</div>
+
+<p>
+In conclusion, Tree-sitter is a powerful tool for parsing source code in a robust and efficient manner. Writing a grammar might seem like a daunting task, but with a good understanding of the parsing algorithm and the help of some handy tools, it becomes a lot more manageable.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+</div>
+</body>
+</html>
