@@ -347,7 +347,6 @@ hr:after {
   justify-content: center;
 }
 
-
 .intro h1 {
   display: flex;
   justify-content: center;
@@ -355,4 +354,8 @@ hr:after {
 
 .intro span {
   margin-bottom: 10px;
+}
+
+.title {
+  display: none !important;
 }
