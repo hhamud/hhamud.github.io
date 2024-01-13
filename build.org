@@ -29,13 +29,6 @@ Install dependencies
 (package-install 'htmlize)
 #+end_src
 
-HTML-preamble
-#+begin_src emacs-lisp
-(defun my/html-pre ()
-  (with-temp-buffer
-    (insert-file-contents "./html-templates/preample.html") (buffer-string)))
-#+end_src
-
 
 Load the publishing system
 #+begin_src emacs-lisp
@@ -123,7 +116,7 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
 
 Set the base directory for the files to be published from.
 #+begin_src emacs-lisp
-(setq org-base-directory "./content")
+(setq org-base-directory "./posts")
 #+end_src
 
 
@@ -141,7 +134,7 @@ Define the publishing project
              :recursive nil
              :base-directory org-base-directory
              :publishing-function 'my/org-publish
-             :publishing-directory "./public"
+             :publishing-directory "./public/posts"
              :with-email nil
              :auto-sitemap t
              :sitemap-title ""
@@ -153,10 +146,10 @@ Define the publishing project
              :time-stamp-file nil)
        (list "pages"
              :recursive nil
-             :base-directory "./pages"
+             :exclude "README.org"
+             :base-directory "./"
              :publishing-function 'my/org-publish
-             :publishing-directory "./public"
-             :html-preamble (my/html-pre)
+             :publishing-directory "./public/"
              :with-email nil
              :with-creator t
              :with-author nil

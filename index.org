@@ -1,4 +1,6 @@
 #+OPTIONS: toc:nil
+#+INCLUDE: "./html-templates/preample.html" export html
+
 
 * About Me
 
@@ -14,12 +16,14 @@ Hello! My name is Hamza Hamud, and I am a software engineer deeply interested in
 :SEPARATOR:
 -----
 :END:
+
 * Posts
-#+INCLUDE: "../content/posts.org"
+#+INCLUDE: "./posts/posts.org" :lines "3-"
 
 :SEPARATOR:
 -----
 :END:
+
 * Projects
 
 ** Current Projects
