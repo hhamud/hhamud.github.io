@@ -1,6 +1,9 @@
 #+TITLE: Hamza Hamud
 #+OPTIONS: toc:nil
 #+INCLUDE: "./html-templates/preample.html" export html
+#+HTML_HEAD_EXTRA: <style type="text/css">
+#+HTML_HEAD_EXTRA: .title { display: none; }
+#+HTML_HEAD_EXTRA: </style>
 
 
 * About Me

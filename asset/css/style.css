@@ -152,11 +152,12 @@ blockquote {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 h1 {
   position: relative;
-  display: inline-block;
-  display: table-cell;
-  padding: 20px 0 40px;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 50px;
   margin: 0;
   overflow: hidden;
 }
@@ -268,11 +269,7 @@ hr:after {
   width: 100%;
   word-wrap: break-word;
 }
-@-moz-document url-prefix() {
-  h1 {
-    display: block;
-  }
-}
+
 .markdown-ones ol > li:after {
   content: "1.";
 }
@@ -350,12 +347,4 @@ hr:after {
 .intro h1 {
   display: flex;
   justify-content: center;
-}
-
-.intro span {
-  margin-bottom: 10px;
-}
-
-.title {
-  display: none !important;
 }
