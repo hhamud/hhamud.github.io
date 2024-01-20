@@ -24,8 +24,11 @@ jobs:
       - name: Install Emacs
         run: sudo apt install emacs --yes
 
+      - name: Set permissions for build.sh
+        run: chmod +x build.sh
+
       - name: Build the site
-        run: bash build.sh
+        run: ./build.sh
 
       - name: Publish generated content to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
