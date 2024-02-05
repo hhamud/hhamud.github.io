@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Using a Blog post as build instructions</title>
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="/asset/css/style.css"/><link rel="stylesheet" href="/asset/css/prism.css"/><script src="/asset/js/prism.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Using a Blog post as build instructions</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc6d4545">The why</a></li>
+<li><a href="#org423ba9a">Packages</a></li>
+<li><a href="#orgc4df7f4">Setting the stylesheets</a></li>
+<li><a href="#orgc961ec3">Editing the backend configuration functions</a></li>
+<li><a href="#orgbd2d966">Setting up org-publish</a></li>
+<li><a href="#orgcaf7ea5">TODOs</a></li>
+</ul>
+</div>
+</div>
+<p>
+<i>I will be continually updating and editing this blog post as I grow this website so consider this to be a small forever post.</i>
+</p>
+
+
+<div id="outline-container-orgc6d4545" class="outline-2">
+<h2 id="orgc6d4545">The why</h2>
+<div class="outline-text-2" id="text-orgc6d4545">
+<p>
+I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish. Why not try and use the literal programming feature of Org to have the actual build instructions for org-publish as an actual blog post.
+</p>
+
+<p>
+Now why org-publish?
+</p>
+
+<p>
+Well because <a href="https://orgmode.org/">org mode</a> is the only decent way of writing documents without going <i>insane</i>.
+</p>
+
+<p>
+The real reason is that one of the many fantastic things about org mode is the ability to write blocks of code in many different languages, and execute them all in the same session, a superior Jupyter notebook but for all languages. This comes in handy when you are engaging in exploratory work which is often what I do. Therefore, compiling it into a blog post becomes the natural next step and I just have to move the file over and <i>walla</i> its there, ready to be published.
+</p>
+
+<p>
+This specific site uses this blog post, a shell script and github pages to actually build and host the website.
+</p>
+
+<p>
+<i>I do have a few other files that I need to move over such as assets, the preamble and postamble to this blog post</i>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org423ba9a" class="outline-2">
+<h2 id="org423ba9a">Packages</h2>
+<div class="outline-text-2" id="text-org423ba9a">
+<p>
+Set the packages into a hidden folder
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">require</span> '<span style="font-weight: bold; text-decoration: underline;">package</span>)
+(<span style="font-weight: bold;">setq</span> package-user-dir (expand-file-name <span style="font-style: italic;">"./.packages"</span>))
+(<span style="font-weight: bold;">setq</span> package-archives '((<span style="font-style: italic;">"melpa"</span> . <span style="font-style: italic;">"https://melpa.org/packages/"</span>)
+                         (<span style="font-style: italic;">"elpa"</span> . <span style="font-style: italic;">"https://elpa.gnu.org/packages/"</span>)))
+</code></pre>
+</div>
+
+<p>
+Initialise the package system
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(package-initialize)
+(<span style="font-weight: bold;">unless</span> package-archive-contents
+  (package-refresh-contents))
+</code></pre>
+</div>
+
+<p>
+Install dependencies
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(package-install 'htmlize)
+</code></pre>
+</div>
+
+<p>
+Load the publishing system
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">require</span> '<span style="font-weight: bold; text-decoration: underline;">ox-publish</span>)
+</code></pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc4df7f4" class="outline-2">
+<h2 id="orgc4df7f4">Setting the stylesheets</h2>
+<div class="outline-text-2" id="text-orgc4df7f4">
+<p>
+To set the css style sheets in the HTML-HEAD.
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> set-css <span style="font-style: italic;">"&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/&gt;&lt;link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/&gt;&lt;script src=\"/asset/js/prism.js\"&gt;&lt;/script&gt;"</span>)
+</code></pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc961ec3" class="outline-2">
+<h2 id="orgc961ec3">Editing the backend configuration functions</h2>
+<div class="outline-text-2" id="text-orgc961ec3">
+<p>
+This overrides the default back-end filter for the <code>src-block</code> and changes the HTML template. This will also change the class to match Prism’s recommendations, which is language-*, where * is the language.
+</p>
+
+<p>
+This code is originally from <a href="https://roygbyte.com/add_syntax_highlighting_to_an_org_publish_project.html">here</a>
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/org-html-src-block</span> (src-block _contents info)
+  <span style="font-style: italic;">"Transcode a SRC-BLOCK element from Org to HTML.</span>
+<span style="font-style: italic;">  CONTENTS holds the contents of the item.  INFO is a plist holding</span>
+<span style="font-style: italic;">  contextual information."</span>
+  (<span style="font-weight: bold;">if</span> (org-export-read-attribute <span style="font-weight: bold;">:attr_html</span> src-block <span style="font-weight: bold;">:textarea</span>)
+      (org-html--textarea-block src-block)
+    (<span style="font-weight: bold;">let*</span> ((lang (org-element-property <span style="font-weight: bold;">:language</span> src-block))
+           (code (org-html-format-code src-block info))
+           (label (<span style="font-weight: bold;">let</span> ((lbl (org-html--reference src-block info t)))
+                    (<span style="font-weight: bold;">if</span> lbl (format <span style="font-style: italic;">" id=\"%s\""</span> lbl) <span style="font-style: italic;">""</span>)))
+           (klipsify  (<span style="font-weight: bold;">and</span>  (plist-get info <span style="font-weight: bold;">:html-klipsify-src</span>)
+                            (member lang '(<span style="font-style: italic;">"javascript"</span> <span style="font-style: italic;">"js"</span>
+                                           <span style="font-style: italic;">"python"</span> <span style="font-style: italic;">"scheme"</span> <span style="font-style: italic;">"clojure"</span> <span style="font-style: italic;">"php"</span> <span style="font-style: italic;">"html"</span> <span style="font-style: italic;">"shell"</span> <span style="font-style: italic;">"rust"</span>)))))
+      (<span style="font-weight: bold;">if</span> (not lang) (format <span style="font-style: italic;">"&lt;pre class=\"example\"%s&gt;\n%s&lt;/pre&gt;"</span> label code)
+        (format <span style="font-style: italic;">"&lt;div class=\"org-src-container\"&gt;\n%s%s\n&lt;/div&gt;"</span>
+                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Build caption.</span>
+                (<span style="font-weight: bold;">let</span> ((caption (org-export-get-caption src-block)))
+                  (<span style="font-weight: bold;">if</span> (not caption) <span style="font-style: italic;">""</span>
+                    (<span style="font-weight: bold;">let</span> ((listing-number
+                           (format
+                            <span style="font-style: italic;">"&lt;span class=\"listing-number\"&gt;%s &lt;/span&gt;"</span>
+                            (format
+                             (org-html--translate <span style="font-style: italic;">"Listing %d:"</span> info)
+                             (org-export-get-ordinal
+                              src-block info nil #'org-html--has-caption-p)))))
+                      (format <span style="font-style: italic;">"&lt;label class=\"org-src-name\"&gt;%s%s&lt;/label&gt;"</span>
+                              listing-number
+                              (org-trim (org-export-data caption info))))))
+                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Contents.</span>
+                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Changed HTML template to work with Prism.</span>
+                (<span style="font-weight: bold;">if</span> klipsify
+                    (format <span style="font-style: italic;">"&lt;pre&gt;&lt;code class=\"src language-%s\"%s%s&gt;%s&lt;/code&gt;&lt;/pre&gt;"</span>
+                            lang
+                            label
+                            (<span style="font-weight: bold;">if</span> (string= lang <span style="font-style: italic;">"html"</span>)
+                                <span style="font-style: italic;">" data-editor-type=\"html\""</span>
+                              <span style="font-style: italic;">""</span>)
+                            code)
+                  (format <span style="font-style: italic;">"&lt;pre&gt;&lt;code class=\"src language-%s\"%s&gt;%s&lt;/code&gt;&lt;/pre&gt;"</span>
+                          lang label code)))))))
+</code></pre>
+</div>
+
+<p>
+Next, a new backend that includes the new filter needs to be defined. According to org-mode’s documentation, we can do that by calling <code>org-export-define-derived-backend</code>, specifying the derived backend’s name and the derived backend’s parent as the first and second parameter, and modifying the <code>:translate-alist</code> property to include the new filter.
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(org-export-define-derived-backend 'site-html
+                                   'html
+                                   <span style="font-weight: bold;">:translate-alist</span>
+                                   '((src-block . my/org-html-src-block)))
+</code></pre>
+</div>
+
+<p>
+Customise the HTML output by using our own scripts and styles without showing our validations links
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-html-validation-link nil org-html-head-include-scripts nil
+      org-html-head-include-default-style nil
+      org-html-head set-css)
+</code></pre>
+</div>
+
+<p>
+This is a wrapper function editing the original <code>org-publish-to-html</code> function
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/org-publish</span> (plist filename pub-dir)
+  <span style="font-style: italic;">"Publish the file only if it contains the line '#+SELECT_TAGS: publish'."</span>
+        (org-publish-org-to 'site-html filename
+                            (concat (<span style="font-weight: bold;">when</span> (&gt; (length org-html-extension) 0) <span style="font-style: italic;">"."</span>)
+                                    (<span style="font-weight: bold;">or</span> (plist-get plist <span style="font-weight: bold;">:html-extension</span>)
+                                        org-html-extension
+                                        <span style="font-style: italic;">"html"</span>))
+                            plist pub-dir))
+</code></pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgbd2d966" class="outline-2">
+<h2 id="orgbd2d966">Setting up org-publish</h2>
+<div class="outline-text-2" id="text-orgbd2d966">
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-publish-project-alist
+      (list
+
+       (list <span style="font-style: italic;">"posts"</span>
+             <span style="font-weight: bold;">:recursive</span> nil
+             <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./posts"</span>
+             <span style="font-weight: bold;">:publishing-function</span> 'my/org-publish
+             <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public/posts"</span>
+             <span style="font-weight: bold;">:with-email</span> nil
+             <span style="font-weight: bold;">:auto-sitemap</span> t
+             <span style="font-weight: bold;">:sitemap-title</span> <span style="font-style: italic;">"posts"</span>
+             <span style="font-weight: bold;">:sitemap-filename</span> <span style="font-style: italic;">"posts.org"</span>
+             <span style="font-weight: bold;">:with-creator</span> t
+             <span style="font-weight: bold;">:with-author</span> nil
+             <span style="font-weight: bold;">:with-toc</span> t
+             <span style="font-weight: bold;">:section-numbers</span> nil
+             <span style="font-weight: bold;">:time-stamp-file</span> nil)
+       (list <span style="font-style: italic;">"pages"</span>
+             <span style="font-weight: bold;">:recursive</span> nil
+             <span style="font-weight: bold;">:exclude</span> <span style="font-style: italic;">"README.org"</span>
+             <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./"</span>
+             <span style="font-weight: bold;">:publishing-function</span> 'my/org-publish
+             <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public/"</span>
+             <span style="font-weight: bold;">:with-email</span> nil
+             <span style="font-weight: bold;">:with-creator</span> t
+             <span style="font-weight: bold;">:with-author</span> nil
+             <span style="font-weight: bold;">:with-toc</span> t
+             <span style="font-weight: bold;">:section-numbers</span> nil
+             <span style="font-weight: bold;">:time-stamp-file</span> nil)
+
+       (list <span style="font-style: italic;">"static"</span>
+         <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./"</span>
+         <span style="font-weight: bold;">:base-extension</span> <span style="font-style: italic;">"css</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">txt</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">jpg</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">gif</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">png</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">|</span><span style="font-style: italic;">js"</span>
+         <span style="font-weight: bold;">:recursive</span> t
+         <span style="font-weight: bold;">:publishing-directory</span>  <span style="font-style: italic;">"./public"</span>
+         <span style="font-weight: bold;">:publishing-function</span> 'org-publish-attachment)
+
+       (list <span style="font-style: italic;">"site"</span> <span style="font-weight: bold;">:components</span> (list <span style="font-style: italic;">"pages"</span> <span style="font-style: italic;">"static"</span> <span style="font-style: italic;">"posts"</span>))
+))
+</code></pre>
+</div>
+
+
+<p>
+Generate the site output
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(org-publish-all t)
+</code></pre>
+</div>
+
+
+<hr />
+</div>
+</div>
+<div id="outline-container-orgcaf7ea5" class="outline-2">
+<h2 id="orgcaf7ea5">TODOs</h2>
+<div class="outline-text-2" id="text-orgcaf7ea5">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> fix mobile view</li>
+<li class="off"><code>[&#xa0;]</code> move table of contents to the right side</li>
+<li class="off"><code>[&#xa0;]</code> add contents of post/preamble to the build post</li>
+<li class="off"><code>[&#xa0;]</code> add hot reload</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+</div>
+</body>
+</html>
