@@ -1,4 +1,4 @@
-#+TITLE: 
+#+TITLE: posts
 
 - [[file:HTLC.org][Exploring the World of HTLCs: Challenges and Innovations]]
 - [[file:clojure_monorepo.org][How to create a Clojure Monorepo]]

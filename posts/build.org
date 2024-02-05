@@ -134,7 +134,7 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
 
        (list "posts"
              :recursive nil
-             :base-directory "./posts "
+             :base-directory "./posts"
              :publishing-function 'my/org-publish
              :publishing-directory "./public/posts"
              :with-email nil
@@ -148,7 +148,7 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
              :time-stamp-file nil)
        (list "pages"
              :recursive nil
-             :exclude "README.org\\|build.org"
+             :exclude "README.org"
              :base-directory "./"
              :publishing-function 'my/org-publish
              :publishing-directory "./public/"
