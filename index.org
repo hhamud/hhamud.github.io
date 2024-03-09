@@ -8,15 +8,13 @@
 
 * About Me
 
-Hello! My name is Hamza Hamud, and I am a software engineer deeply interested in open-source projects. I also hold a Masters in Chemical Engineering from the University of Sheffield.
+Hello! My name is Hamza Hamud, and I am a software engineer with a deep interest in distributed computing and cryptography. I also hold a Masters in Chemical Engineering from the University of Sheffield.
 
-** Open Source Contributions:
-- I am deeply involved in the open-source community, you can checkout my projects list as these projects demonstrate my expertise in Emacs-Lisp and Rust.
 
 ** Interests:
-- Beyond my professional work, I enjoy exploring new technologies and delving into various topics such as gastroentology, computer science and cryptography.
+- Beyond my professional work, I enjoy delving into various topics such as gastroentology, or whatever else comes to mind.
 
-- For any inquiries, please contact me via email.
+- For any inquiries, please contact me via [[mailto:self@hamzahamud.com][email.]]
 :SEPARATOR:
 -----
 :END:
@@ -34,23 +32,12 @@ Hello! My name is Hamza Hamud, and I am a software engineer deeply interested in
 *** [[https://github.com/hhamud/flop][Flop]]
    A lisp implementation written from scratch in rust.
 
-*** [[https://github.com/hhamud/amanita][Amanita]]
-   A tool to sync your directory over your local network.
-
 ** Completed Projects
 *** [[https://github.com/hhamud/Noir-ts-mode][Noir ts mode]]
    An Emacs language major mode written in Emacs-lisp for the Noir smart contract language that uses the tree-sitter api, includes syntax highlighting.
 
 *** [[https://github.com/hhamud/Noir-mode][Noir mode]]
    An Emacs language major mode written in emacs-lisp for the Noir smart contract language that includes syntax highlighting.
-
-*** [[https://github.com/hhamud/mercury][Mercury]]
-   A clojure monorepo that contains a bunch of applications and libraries for organising information.
-
-**** Modules
-    - Clojure library for interacting with the [[https://getpocket.com/en/about/][Pocket]] [[https://getpocket.com/developer/docs/overview][API]]
-    - Clojure app that retrieves pocket saves and downloads the HTML files concurrently
-    - [[https://github.com/nextjournal/clerk][Clerk]] bills dashboard
 
 *** [[https://github.com/hhamud/tree-sitter-Noir][Tree-sitter-Noir]]
    Treesitter plugin for Noir language, (a ZK circuit writing language).
