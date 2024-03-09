@@ -16,12 +16,12 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org822dd46">The why</a></li>
-<li><a href="#org70c4702">Packages</a></li>
-<li><a href="#org2a6d38b">Setting the stylesheets</a></li>
-<li><a href="#orgaa2041c">Editing the backend configuration functions</a></li>
-<li><a href="#orgec2ab00">Setting up org-publish</a></li>
-<li><a href="#orgfc5e10f">TODOs</a></li>
+<li><a href="#org44b6370">The why</a></li>
+<li><a href="#orgb81d928">Packages</a></li>
+<li><a href="#orgdc379bd">Setting the stylesheets</a></li>
+<li><a href="#orgea97803">Editing the backend configuration functions</a></li>
+<li><a href="#org7469acc">Setting up org-publish</a></li>
+<li><a href="#org8ecad28">TODOs</a></li>
 </ul>
 </div>
 </div>
@@ -30,9 +30,9 @@
 </p>
 
 
-<div id="outline-container-org822dd46" class="outline-2">
-<h2 id="org822dd46">The why</h2>
-<div class="outline-text-2" id="text-org822dd46">
+<div id="outline-container-org44b6370" class="outline-2">
+<h2 id="org44b6370">The why</h2>
+<div class="outline-text-2" id="text-org44b6370">
 <p>
 I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish. Why not try and use the literal programming feature of Org to have the actual build instructions for org-publish as an actual blog post.
 </p>
@@ -59,9 +59,9 @@ This specific site uses this blog post, a shell script and github pages to actua
 </div>
 </div>
 
-<div id="outline-container-org70c4702" class="outline-2">
-<h2 id="org70c4702">Packages</h2>
-<div class="outline-text-2" id="text-org70c4702">
+<div id="outline-container-orgb81d928" class="outline-2">
+<h2 id="orgb81d928">Packages</h2>
+<div class="outline-text-2" id="text-orgb81d928">
 <p>
 Set the packages into a hidden folder
 </p>
@@ -101,9 +101,9 @@ Load the publishing system
 </div>
 </div>
 
-<div id="outline-container-org2a6d38b" class="outline-2">
-<h2 id="org2a6d38b">Setting the stylesheets</h2>
-<div class="outline-text-2" id="text-org2a6d38b">
+<div id="outline-container-orgdc379bd" class="outline-2">
+<h2 id="orgdc379bd">Setting the stylesheets</h2>
+<div class="outline-text-2" id="text-orgdc379bd">
 <p>
 To set the css style sheets in the HTML-HEAD.
 </p>
@@ -114,9 +114,9 @@ To set the css style sheets in the HTML-HEAD.
 </div>
 </div>
 
-<div id="outline-container-orgaa2041c" class="outline-2">
-<h2 id="orgaa2041c">Editing the backend configuration functions</h2>
-<div class="outline-text-2" id="text-orgaa2041c">
+<div id="outline-container-orgea97803" class="outline-2">
+<h2 id="orgea97803">Editing the backend configuration functions</h2>
+<div class="outline-text-2" id="text-orgea97803">
 <p>
 This overrides the default back-end filter for the <code>src-block</code> and changes the HTML template. This will also change the class to match Prism’s recommendations, which is language-*, where * is the language.
 </p>
@@ -207,9 +207,9 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
 </div>
 
 
-<div id="outline-container-orgec2ab00" class="outline-2">
-<h2 id="orgec2ab00">Setting up org-publish</h2>
-<div class="outline-text-2" id="text-orgec2ab00">
+<div id="outline-container-org7469acc" class="outline-2">
+<h2 id="org7469acc">Setting up org-publish</h2>
+<div class="outline-text-2" id="text-org7469acc">
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-publish-project-alist
       (list
@@ -266,9 +266,9 @@ Generate the site output
 <hr />
 </div>
 </div>
-<div id="outline-container-orgfc5e10f" class="outline-2">
-<h2 id="orgfc5e10f">TODOs</h2>
-<div class="outline-text-2" id="text-orgfc5e10f">
+<div id="outline-container-org8ecad28" class="outline-2">
+<h2 id="org8ecad28">TODOs</h2>
+<div class="outline-text-2" id="text-org8ecad28">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> fix mobile view</li>
 <li class="off"><code>[&#xa0;]</code> move table of contents to the right side</li>
@@ -279,7 +279,7 @@ Generate the site output
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.2 (<a href="https://orgmode.org">Org</a> mode 9.6.15)</p>
 </div>
 </body>
 </html>
