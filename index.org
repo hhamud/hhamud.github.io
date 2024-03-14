@@ -8,13 +8,9 @@
 
 * About Me
 
-Hello! My name is Hamza Hamud, and I am a software engineer with a deep interest in distributed computing and cryptography. I also hold a Masters in Chemical Engineering from the University of Sheffield.
+Hi! I'm Hamza, I enjoy trying out different things suited to my tastes, currently that is gastroenterology, programming and cryptography.
 
-
-** Interests:
-- Beyond my professional work, I enjoy delving into various topics such as gastroentology, or whatever else comes to mind.
-
-- For any inquiries, please contact me via [[mailto:self@hamzahamud.com][email.]]
+For any inquiries, please contact me via [[mailto:self@hamzahamud.com][email.]]
 :SEPARATOR:
 -----
 :END:
