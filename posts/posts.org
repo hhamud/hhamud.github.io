@@ -1,6 +1,7 @@
 #+TITLE: posts
 
 - [[file:HTLC.org][Exploring the World of HTLCs: Challenges and Innovations]]
+- [[file:long-lost-wallet.org][Finding your long lost hot wallet]]
 - [[file:clojure_monorepo.org][How to create a Clojure Monorepo]]
 - [[file:notes_on_gastritis.org][Notes on Gastritis]]
 - [[file:tree-sitter.org][Notes on Tree-sitter]]

@@ -1,0 +1,40 @@
+:PROPERTIES:
+:ID: 077C46DD-FE07-4248-ABBE-3754D32D266D
+:END:
+#+title: Finding your long lost hot wallet
+
+
+Let's say that you did something silly like use a spare old computer for all your hot wallet needs and forget to back up the mnemonic seed phrase. This blog is for you, fortunately someone else did all the hard work already and also did us all the favour of writing it all up here.
+
+https://medium.com/coinmonks/lost-metamask-wallet-the-forensic-way-c1871c3768f3
+
+Check it out its great!.
+
+I simply wanted to add a few more details to this article and specify how to use the foremost program to search your hard drive.
+
+**Skip** most of the article and get to the **foremost** section.
+
+Instead of editing your foremost configuration =/etc/formost.conf= like so:
+#+begin_src shell
+snappy y 900000 \xff\x06\x00\x00\x73\x4e\x61\x50\x70\x59\x00 x\xea\x82\xa2\x00
+#+end_src
+
+Replace the size of file with a random assortment of numbers that is larger than 900kb instead of capping it to 900kb:
+#+begin_src shell
+snappy y 1000000000000 \xff\x06\x00\x00\x73\x4e\x61\x50\x70\x59\x00 x\xea\x82\xa2\x00
+#+end_src
+
+This is important because the size of the file is effectively unlimited, as foremost either uses the size **or** the footer as the delimiter. Therefore, you want the program to depend on using the footer, rather than the size otherwise this may cause you to potentially miss your hot wallet file.
+
+Then run the program as so:
+#+begin_src shell
+sudo foremost -v -i <dismounted internal hard drive> -o /<location of external hard drive> -c /etc/foremost.conf
+#+end_src
+
+The program will spit out an ungodly amount of files in the midst of searching and most of the files will just be copies of each other. This is why I recommend attaching an empty external hard drive, and not depend on the storage size of the live USB that you will be mounting.
+
+After completing this step, follow the rest of the article that further guides you on how to de-compress your compressed snappy files into text files. Then you will specifically be looking for files that are approximately **1-3mb** in size. So click through them manually and CTRL + F for words like "vault" or "keyring" and eventually you will find your file.
+
+You may have to do further work in cleaning up the file and removing any non ASCII characters, for the vault to finally fit the specifications of the metamask vault decrypter.
+
+Hopefully, after all this work you too will also have found the private key of your long lost wallet.
