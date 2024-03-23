@@ -16,12 +16,12 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0e9e04a">The why</a></li>
-<li><a href="#org09e1f5d">Packages</a></li>
-<li><a href="#org455d67d">Setting the stylesheets</a></li>
-<li><a href="#org3314eca">Editing the backend configuration functions</a></li>
-<li><a href="#org4b60b2a">Setting up org-publish</a></li>
-<li><a href="#orgb672d9d">TODOs</a></li>
+<li><a href="#org7b0816c">The why</a></li>
+<li><a href="#org17b16d4">Packages</a></li>
+<li><a href="#org60f0337">Setting the stylesheets</a></li>
+<li><a href="#org2d5ffde">Editing the backend configuration functions</a></li>
+<li><a href="#org7135a8b">Setting up org-publish</a></li>
+<li><a href="#org894d62e">TODOs</a></li>
 </ul>
 </div>
 </div>
@@ -30,9 +30,9 @@
 </p>
 
 
-<div id="outline-container-org0e9e04a" class="outline-2">
-<h2 id="org0e9e04a">The why</h2>
-<div class="outline-text-2" id="text-org0e9e04a">
+<div id="outline-container-org7b0816c" class="outline-2">
+<h2 id="org7b0816c">The why</h2>
+<div class="outline-text-2" id="text-org7b0816c">
 <p>
 I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish. Why not try and use the literal programming feature of Org to have the actual build instructions for org-publish as an actual blog post.
 </p>
@@ -59,9 +59,9 @@ This specific site uses this blog post, a shell script and github pages to actua
 </div>
 </div>
 
-<div id="outline-container-org09e1f5d" class="outline-2">
-<h2 id="org09e1f5d">Packages</h2>
-<div class="outline-text-2" id="text-org09e1f5d">
+<div id="outline-container-org17b16d4" class="outline-2">
+<h2 id="org17b16d4">Packages</h2>
+<div class="outline-text-2" id="text-org17b16d4">
 <p>
 Set the packages into a hidden folder
 </p>
@@ -101,9 +101,9 @@ Load the publishing system
 </div>
 </div>
 
-<div id="outline-container-org455d67d" class="outline-2">
-<h2 id="org455d67d">Setting the stylesheets</h2>
-<div class="outline-text-2" id="text-org455d67d">
+<div id="outline-container-org60f0337" class="outline-2">
+<h2 id="org60f0337">Setting the stylesheets</h2>
+<div class="outline-text-2" id="text-org60f0337">
 <p>
 To set the css style sheets in the HTML-HEAD.
 </p>
@@ -114,9 +114,9 @@ To set the css style sheets in the HTML-HEAD.
 </div>
 </div>
 
-<div id="outline-container-org3314eca" class="outline-2">
-<h2 id="org3314eca">Editing the backend configuration functions</h2>
-<div class="outline-text-2" id="text-org3314eca">
+<div id="outline-container-org2d5ffde" class="outline-2">
+<h2 id="org2d5ffde">Editing the backend configuration functions</h2>
+<div class="outline-text-2" id="text-org2d5ffde">
 <p>
 This overrides the default back-end filter for the <code>src-block</code> and changes the HTML template. This will also change the class to match Prism’s recommendations, which is language-*, where * is the language.
 </p>
@@ -207,9 +207,9 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
 </div>
 
 
-<div id="outline-container-org4b60b2a" class="outline-2">
-<h2 id="org4b60b2a">Setting up org-publish</h2>
-<div class="outline-text-2" id="text-org4b60b2a">
+<div id="outline-container-org7135a8b" class="outline-2">
+<h2 id="org7135a8b">Setting up org-publish</h2>
+<div class="outline-text-2" id="text-org7135a8b">
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-publish-project-alist
       (list
@@ -266,9 +266,9 @@ Generate the site output
 <hr />
 </div>
 </div>
-<div id="outline-container-orgb672d9d" class="outline-2">
-<h2 id="orgb672d9d">TODOs</h2>
-<div class="outline-text-2" id="text-orgb672d9d">
+<div id="outline-container-org894d62e" class="outline-2">
+<h2 id="org894d62e">TODOs</h2>
+<div class="outline-text-2" id="text-org894d62e">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> fix mobile view</li>
 <li class="off"><code>[&#xa0;]</code> move table of contents to the right side</li>
