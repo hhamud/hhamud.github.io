@@ -178,8 +178,3 @@ Generate the site output
 
 
 -------
-** TODOs
-- [ ] fix mobile view
-- [ ] move table of contents to the right side
-- [ ] add contents of post/preamble to the build post
-- [ ] add hot reload

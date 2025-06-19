@@ -1,1 +1,229 @@
-#+title: Blog
+#+TITLE: Static Site Generator with Emacs and Org Mode
+
+* Overview
+This project is a personal static site generator built entirely within Emacs using its powerful Org Mode export engine (~ox-publish~). It takes a collection of Org files, processes them, and generates a static HTML website, including a blog, static pages, and assets.
+
+The system is designed to be:
+- *Content-driven*: The focus is on writing content in simple Org files.
+- *Customizable*: The build process is defined in an Emacs Lisp script, allowing for deep customization of the final HTML output.
+- *Selective*: Only Org files explicitly marked for publishing are included in the final site.
+- *Self-contained*: It uses a local package directory to manage Emacs package dependencies.
+
+* How it Works
+The build process is orchestrated by a simple shell script (`build.sh` or similar) that uses Emacs in a non-interactive (batch) mode.
+
+1.  *Tangle (Optional but good practice)*: The shell script's first command, `emacs --batch ... (org-babel-tangle-file ...)` is designed to extract Emacs Lisp code from an Org file (e.g., `build.org`). This practice, called "tangling," allows you to keep your configuration documented within a literate programming environment. The output is a pure script file, `build.el`.
+2.  *Execute Build Script*: The second command, `emacs -Q --script build.el`, runs the generated Emacs Lisp script.
+    - `-Q`: Starts Emacs with minimal configuration, ensuring a clean and predictable environment.
+    - `--script build.el`: Executes the script non-interactively and then exits.
+3.  *Publish Content*: The `build.el` script configures and runs Org's `ox-publish` system, which reads the source files (`.org`, `.css`, etc.), converts them to HTML, and places the final site in the `./public/` directory.
+
+* Code Breakdown
+** The Build Script (e.g., `build.sh`)
+This is the entry point for the entire build process.
+
+#+BEGIN_SRC sh
+#!/usr/bin/env sh
+
+# Step 1: Tangle the Org file
+# Extracts Lisp code from `posts/build.org` into `build.el`.
+emacs --batch --eval "(require 'org)" --eval "(org-babel-tangle-file \"posts/build.org\")"
+
+# Step 2: Run the tangled Emacs Lisp script
+# Executes the build logic using a clean Emacs instance.
+emacs -Q --script build.el
+#+END_SRC
+
+** The Emacs Lisp Configuration (`build.el`)
+This file contains all the logic for setting up the environment and defining the publishing rules.
+
+*** 1. Package Management
+The script first sets up a local Emacs package environment to ensure dependencies are met without affecting the user's global Emacs configuration.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+;; Use a local directory for packages
+(setq package-user-dir (expand-file-name "./.packages"))
+;; Define package sources (MELPA and ELPA)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+(package-initialize)
+;; Refresh package list if not already done
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Install the `htmlize` package, used for syntax highlighting in code blocks
+(package-install 'htmlize)
+#+END_SRC
+
+*** 2. HTML Export Customization
+This section customizes the HTML output to meet specific needs, like using a custom stylesheet and integrating the Prism.js syntax highlighter.
+
+#+BEGIN_SRC emacs-lisp
+;; Required for the publishing logic
+(require 'ox-publish)
+
+;; Define the HTML head content, linking to custom CSS and JS for Prism
+(setq set-css "<link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/><link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/><script src=\"/asset/js/prism.js\"></script>")
+
+;; This function REPLACES the default source code block exporter.
+;; It generates HTML compatible with Prism.js: `<pre><code class="language-xyz">...`
+(defun my/org-html-src-block (src-block _contents info)
+  "Transcode a SRC-BLOCK element from Org to HTML for Prism.js."
+  (if (org-export-read-attribute :attr_html src-block :textarea)
+      (org-html--textarea-block src-block)
+    (let* ((lang (org-element-property :language src-block))
+           (code (org-html-format-code src-block info)))
+      ;; ... (caption logic remains the same)
+      ;; The key change is here:
+      (format "<pre><code class=\"src language-%s\"%s>%s</code></pre>"
+              lang "" code)))) ; Simplified for clarity
+
+;; Define a new export backend named `site-html` based on the default `html` backend.
+;; This new backend uses our custom function for source blocks.
+(org-export-define-derived-backend 'site-html 'html
+  :translate-alist
+  '((src-block . my/org-html-src-block)))
+
+;; Global HTML export settings
+(setq org-html-validation-link nil ; Remove W3C validation link
+      org-html-head-include-scripts nil ; Don't include default JS
+      org-html-head-include-default-style nil ; Don't include default CSS
+      org-html-head set-css) ; Use our custom head content
+#+END_SRC
+
+*** 3. Publishing Logic
+This is the core of the static site generator. It defines which files to publish, where to find them, and where to put the output.
+
+#+BEGIN_SRC emacs-lisp
+;; A custom publishing function to filter files.
+;; It only publishes an Org file if it contains the line: `#+SELECT_TAGS: publish`
+(defun my/org-publish (plist filename pub-dir)
+  "Publish the file only if it contains '#+SELECT_TAGS: publish'."
+  (org-publish-org-to 'site-html filename ; Use our custom 'site-html' backend
+                      (concat ... ".html")
+                      plist pub-dir))
+
+;; The main configuration for the entire project
+(setq org-publish-project-alist
+      (list
+
+       ;; Component 1: "posts"
+       ;; Publishes blog posts from the ./posts directory
+       (list "posts"
+             :base-directory "./posts"
+             :publishing-directory "./public/posts"
+             :publishing-function 'my/org-publish ; Use our custom filter function
+             :recursive nil
+             :auto-sitemap t ; Automatically generate a sitemap
+             :sitemap-title "posts"
+             :sitemap-filename "posts.org"
+             :with-toc t)
+
+       ;; Component 2: "pages"
+       ;; Publishes top-level pages from the root directory
+       (list "pages"
+             :base-directory "./"
+             :publishing-directory "./public/"
+             :publishing-function 'my/org-publish ; Also uses the filter
+             :exclude "README.org" ; Don't publish the README
+             :recursive nil
+             :with-toc t)
+
+       ;; Component 3: "static"
+       ;; Copies static assets (CSS, JS, images) as-is
+       (list "static"
+         :base-directory "./"
+         :base-extension "css\\|txt\\|jpg\\|gif\\|png\\|js"
+         :recursive t
+         :publishing-directory  "./public"
+         ;; Uses the standard function for copying attachments
+         :publishing-function 'org-publish-attachment)
+
+       ;; Component 4: "site"
+       ;; A meta-component that groups the others for easy publishing
+       (list "site" :components (list "pages" "static" "posts"))
+))
+#+END_SRC
+
+*** 4. Triggering the Publish
+This final line executes the entire process defined in `org-publish-project-alist`.
+
+#+BEGIN_SRC emacs-lisp
+;; Publish the "site" component, which includes all other components.
+;; The `t` argument forces republishing of all files, ignoring timestamps.
+(org-publish-all t)
+#+END_SRC
+
+** The Main Org File (`index.org`)
+This is an example of a source content file. It demonstrates several key features of Org Mode for web publishing.
+
+#+BEGIN_SRC org
+;; --- METADATA ---
+#+TITLE: Hamza Hamud
+#+OPTIONS: toc:nil  ; Disables the table of contents for this page
+
+;; --- INCLUDES ---
+;; Includes the raw HTML content from another file at the top of the body
+#+INCLUDE: "./html-templates/preample.html" export html
+
+;; --- CUSTOM CSS ---
+;; Injects page-specific CSS to hide the main title generated by Org Mode
+#+HTML_HEAD_EXTRA: <style type="text/css">
+#+HTML_HEAD_EXTRA: .title { display: none; }
+#+HTML_HEAD_EXTRA: </style>
+
+
+;; --- CONTENT ---
+* About Me
+Hi! I'm Hamza...
+
+* Posts
+;; Includes the content from another Org file, starting from line 3.
+;; This is likely used to embed the generated post sitemap.
+#+INCLUDE: "./posts/posts.org" :lines "3-"
+
+* Projects
+** Current Projects
+*** [[https://github.com/hhamud/flop][Flop]]
+   A lisp implementation written from scratch in rust.
+...
+#+END_SRC
+
+* How to Use
+1.  *Prerequisites*: You need a working installation of Emacs.
+2.  *Content Creation*:
+    - Create `.org` files for your pages (in `./`) or posts (in `./posts/`).
+    - **Crucially**, add the line `#+SELECT_TAGS: publish` to any `.org` file you want to be published on the site.
+    - Add static assets like CSS, JS, and images to their respective directories (e.g., `./asset/css/`).
+3.  *Build the Site*: Run the build script from your terminal:
+    #+BEGIN_SRC sh
+    sh build.sh
+    #+END_SRC
+4.  *View the Output*: The complete, generated website will be in the `./public/` directory. You can open `public/index.html` in a browser to see the result.
+
+* Expected File Structure
+#+BEGIN_SRC text
+.
+├── .packages/              # Local emacs packages installed by the script
+├── asset/
+│   ├── css/
+│   │   ├── prism.css
+│   │   └── style.css
+│   └── js/
+│       └── prism.js
+├── posts/
+│   ├── a-blog-post.org     # Contains '#+SELECT_TAGS: publish'
+│   └── build.org           # (Optional) Source for build.el
+├── public/                 # OUTPUT DIRECTORY (Generated)
+│   ├── asset/
+│   ├── posts/
+│   │   ├── a-blog-post.html
+│   │   └── posts.html      # Sitemap
+│   └── index.html
+├── build.el                # The tangled build script
+├── build.sh                # The main build script
+├── index.org               # Main page source, contains '#+SELECT_TAGS: publish'
+└── README.org              # This file
+#+END_SRC
