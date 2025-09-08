@@ -8,6 +8,7 @@ The system is designed to be:
 - *Customizable*: The build process is defined in an Emacs Lisp script, allowing for deep customization of the final HTML output.
 - *Selective*: Only Org files explicitly marked for publishing are included in the final site.
 - *Self-contained*: It uses a local package directory to manage Emacs package dependencies.
+- *Developer-friendly*: Includes hot reload functionality for automatic builds and HTTP server.
 
 * How it Works
 The build process is orchestrated by a simple shell script (`build.sh` or similar) that uses Emacs in a non-interactive (batch) mode.
@@ -192,16 +193,93 @@ Hi! I'm Hamza...
 #+END_SRC
 
 * How to Use
+** Basic Setup
 1.  *Prerequisites*: You need a working installation of Emacs.
 2.  *Content Creation*:
     - Create `.org` files for your pages (in `./`) or posts (in `./posts/`).
     - **Crucially**, add the line `#+SELECT_TAGS: publish` to any `.org` file you want to be published on the site.
     - Add static assets like CSS, JS, and images to their respective directories (e.g., `./asset/css/`).
-3.  *Build the Site*: Run the build script from your terminal:
-    #+BEGIN_SRC sh
-    sh build.sh
-    #+END_SRC
-4.  *View the Output*: The complete, generated website will be in the `./public/` directory. You can open `public/index.html` in a browser to see the result.
+
+** Building the Site
+
+*Manual Build*:
+#+BEGIN_SRC sh
+sh build.sh
+#+END_SRC
+The complete, generated website will be in the `./public/` directory. You can open `public/index.html` in a browser to see the result.
+
+*Hot Reload Development*:
+
+For development with automatic builds:
+#+BEGIN_SRC sh
+uv run hotreload.py --initial-build
+#+END_SRC
+
+Or start watching without initial build:
+#+BEGIN_SRC sh
+uv run hotreload.py
+#+END_SRC
+
+*Hot Reload Options*:
+- =--initial-build=: Run build once before starting to watch changes
+- =--no-server=: Build watcher only (disable HTTP server)
+
+The hot reload system automatically runs `./build.sh` when files change and serves the site via HTTP server at =http://localhost:8000=.
+
+* Hot Reload System
+The project includes a sophisticated hot reload system for development productivity.
+
+** Features
+- *Immediate rebuilds*: No cooldown delays - builds trigger instantly on every file change
+- *Smart file watching*: Monitors `.org`, `.el`, `.css`, `.js`, and `build.sh` files recursively
+- *HTTP server*: Built-in server serves files from `./public/` at `http://localhost:8000`
+- *Conflict resistance*: Automatically resolves Emacs lock conflicts
+- *Build artifact exclusion*: Ignores generated files to prevent circular builds
+- *Retry logic*: Retries failed builds due to lock conflicts up to 3 times
+- *Port conflict handling*: Automatically finds available port if 8000 is in use
+
+** File Detection
+
+*** Watched files:
+- `*.org` files (all Org files in all directories)
+- `*.el` files (Emacs Lisp files)  
+- `*.css` files (stylesheets in assets directory)
+- `*.js` files (JavaScript in assets directory)
+- `build.sh` (the build script itself)
+
+*** Excluded files (prevents circular builds):
+- `.#*` files (Emacs lock files)
+- `build.el` (generated Emacs Lisp from tangling)
+- `posts/posts.org` (auto-generated sitemap)
+- Everything in `public/` directory (build output)
+
+** Build Process
+The watcher automatically:
+1. Detect file changes
+2. Clean Emacs cache files
+3. Run `./build.sh` with retry logic
+4. Verify build completion
+5. Serve updated content via HTTP server
+
+** Troubleshooting
+
+*** Build fails with lock conflicts
+If you see "Cannot resolve lock conflict in batch mode":
+- The watcher automatically cleans cache files and retries builds
+- Check for "🔄 Attempts X/Y" messages to see retries in action
+- Try manually clearing: `rm -f ~/.org-timestamps/*.cache`
+
+*** Continuous rebuilds
+If builds keep happening:
+- Check that you're not modifying excluded files in `public/`
+- The watcher excludes build-generated files by default
+- Look for "File changed:" messages to see what triggers builds
+
+*** Build not triggering  
+If builds don't start when you modify files:
+1. Ensure the watcher is running (you'll see "Waiting for file changes...")
+2. Check that you're modifying monitored file types
+3. Verify `./build.sh` has execute permissions
 
 * Expected File Structure
 #+BEGIN_SRC text
@@ -224,6 +302,8 @@ Hi! I'm Hamza...
 │   └── index.html
 ├── build.el                # The tangled build script
 ├── build.sh                # The main build script
+├── hotreload.py            # Hot reload script with HTTP server
 ├── index.org               # Main page source, contains '#+SELECT_TAGS: publish'
 └── README.org              # This file
 #+END_SRC
+
