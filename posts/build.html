@@ -16,20 +16,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd4d8607">The why</a></li>
-<li><a href="#org978bb29">Packages</a></li>
-<li><a href="#orgda944cb">Setting the stylesheets</a></li>
-<li><a href="#org43ae6f2">Editing the backend configuration functions</a></li>
-<li><a href="#org1b81d45">Setting up org-publish</a></li>
+<li><a href="#org69032ad">The why</a></li>
+<li><a href="#org6fd4d1d">Packages</a></li>
+<li><a href="#org2d9ec1a">Setting the stylesheets</a></li>
+<li><a href="#org7a0fcf8">Editing the backend configuration functions</a></li>
+<li><a href="#org3f606c4">Setting up org-publish</a></li>
 </ul>
 </div>
 </div>
 <p>
 <i>I will be continually updating and editing this blog post as I grow this website so consider this to be a small forever post.</i>
 </p>
-<div id="outline-container-orgd4d8607" class="outline-2">
-<h2 id="orgd4d8607">The why</h2>
-<div class="outline-text-2" id="text-orgd4d8607">
+<div id="outline-container-org69032ad" class="outline-2">
+<h2 id="org69032ad">The why</h2>
+<div class="outline-text-2" id="text-org69032ad">
 <p>
 I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish. Why not try and use the literal programming feature of Org to have the actual build instructions for org-publish as an actual blog post.
 </p>
@@ -55,9 +55,9 @@ This specific site uses this blog post, a shell script and github pages to actua
 </p>
 </div>
 </div>
-<div id="outline-container-org978bb29" class="outline-2">
-<h2 id="org978bb29">Packages</h2>
-<div class="outline-text-2" id="text-org978bb29">
+<div id="outline-container-org6fd4d1d" class="outline-2">
+<h2 id="org6fd4d1d">Packages</h2>
+<div class="outline-text-2" id="text-org6fd4d1d">
 <p>
 Set the packages into a hidden folder
 </p>
@@ -96,9 +96,9 @@ Load the publishing system
 </div>
 </div>
 </div>
-<div id="outline-container-orgda944cb" class="outline-2">
-<h2 id="orgda944cb">Setting the stylesheets</h2>
-<div class="outline-text-2" id="text-orgda944cb">
+<div id="outline-container-org2d9ec1a" class="outline-2">
+<h2 id="org2d9ec1a">Setting the stylesheets</h2>
+<div class="outline-text-2" id="text-org2d9ec1a">
 <p>
 To set the css style sheets in the HTML-HEAD.
 </p>
@@ -108,9 +108,9 @@ To set the css style sheets in the HTML-HEAD.
 </div>
 </div>
 </div>
-<div id="outline-container-org43ae6f2" class="outline-2">
-<h2 id="org43ae6f2">Editing the backend configuration functions</h2>
-<div class="outline-text-2" id="text-org43ae6f2">
+<div id="outline-container-org7a0fcf8" class="outline-2">
+<h2 id="org7a0fcf8">Editing the backend configuration functions</h2>
+<div class="outline-text-2" id="text-org7a0fcf8">
 <p>
 This overrides the default back-end filter for the <code>src-block</code> and changes the HTML template. This will also change the class to match Prism’s recommendations, which is language-*, where * is the language.
 </p>
@@ -120,9 +120,9 @@ This code is originally from <a href="https://roygbyte.com/add_syntax_highlighti
 </p>
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/org-html-src-block</span> (src-block _contents info)
-  <span style="font-style: italic;">"Transcode a SRC-BLOCK element from Org to HTML.</span>
-<span style="font-style: italic;">  CONTENTS holds the contents of the item.  INFO is a plist holding</span>
-<span style="font-style: italic;">  contextual information."</span>
+  <span style="font-style: italic;">"Transcode a SRC-BLOCK element from Org to HTML.
+  CONTENTS holds the contents of the item.  INFO is a plist holding
+  contextual information."</span>
   (<span style="font-weight: bold;">if</span> (org-export-read-attribute <span style="font-weight: bold;">:attr_html</span> src-block <span style="font-weight: bold;">:textarea</span>)
       (org-html--textarea-block src-block)
     (<span style="font-weight: bold;">let*</span> ((lang (org-element-property <span style="font-weight: bold;">:language</span> src-block))
@@ -134,8 +134,8 @@ This code is originally from <a href="https://roygbyte.com/add_syntax_highlighti
                                            <span style="font-style: italic;">"python"</span> <span style="font-style: italic;">"scheme"</span> <span style="font-style: italic;">"clojure"</span> <span style="font-style: italic;">"php"</span> <span style="font-style: italic;">"html"</span> <span style="font-style: italic;">"shell"</span> <span style="font-style: italic;">"rust"</span>)))))
       (<span style="font-weight: bold;">if</span> (not lang) (format <span style="font-style: italic;">"&lt;pre class=\"example\"%s&gt;\n%s&lt;/pre&gt;"</span> label code)
         (format <span style="font-style: italic;">"&lt;div class=\"org-src-container\"&gt;\n%s%s\n&lt;/div&gt;"</span>
-                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Build caption.</span>
-                (<span style="font-weight: bold;">let</span> ((caption (org-export-get-caption src-block)))
+                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Build caption.
+</span>                (<span style="font-weight: bold;">let</span> ((caption (org-export-get-caption src-block)))
                   (<span style="font-weight: bold;">if</span> (not caption) <span style="font-style: italic;">""</span>
                     (<span style="font-weight: bold;">let</span> ((listing-number
                            (format
@@ -147,9 +147,9 @@ This code is originally from <a href="https://roygbyte.com/add_syntax_highlighti
                       (format <span style="font-style: italic;">"&lt;label class=\"org-src-name\"&gt;%s%s&lt;/label&gt;"</span>
                               listing-number
                               (org-trim (org-export-data caption info))))))
-                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Contents.</span>
-                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Changed HTML template to work with Prism.</span>
-                (<span style="font-weight: bold;">if</span> klipsify
+                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Contents.
+</span>                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Changed HTML template to work with Prism.
+</span>                (<span style="font-weight: bold;">if</span> klipsify
                     (format <span style="font-style: italic;">"&lt;pre&gt;&lt;code class=\"src language-%s\"%s%s&gt;%s&lt;/code&gt;&lt;/pre&gt;"</span>
                             lang
                             label
@@ -199,9 +199,9 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
 </div>
 </div>
 </div>
-<div id="outline-container-org1b81d45" class="outline-2">
-<h2 id="org1b81d45">Setting up org-publish</h2>
-<div class="outline-text-2" id="text-org1b81d45">
+<div id="outline-container-org3f606c4" class="outline-2">
+<h2 id="org3f606c4">Setting up org-publish</h2>
+<div class="outline-text-2" id="text-org3f606c4">
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-publish-project-alist
       (list
@@ -253,14 +253,11 @@ Generate the site output
 <pre><code class="src language-emacs-lisp">(org-publish-all t)
 </code></pre>
 </div>
-
-
-<hr />
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p>
 </div>
 </body>
 </html>
