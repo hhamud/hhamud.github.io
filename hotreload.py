@@ -78,9 +78,9 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             # Keep connection alive for SSE
             while True:
                 time.sleep(1)
-                # Send periodic keep-alive message
+                # Send periodic keep-alive message (comments are ignored by clients)
                 try:
-                    self.wfile.write(b':ping\n\n')
+                    self.wfile.write(b':keepalive\n\n')
                     self.wfile.flush()
                 except:
                     break
@@ -101,10 +101,16 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     content = f.read()
                 
                 # Inject refresh script before </body> tag
-                refresh_script = b'<!-- Hot Reload Script -->\n<script>const source = new EventSource("/__events__"); source.onmessage =()=>location.reload();</script>\n'
+                refresh_script = b'<!-- Hot Reload Script -->\n<script>const source = new EventSource("/__events__"); source.addEventListener("reload", () => location.reload()); source.onerror = e => console.error("SSE error:", e);</script>\n'
                 
-                # Replace closing body tag
-                updated_content = content.replace(b'</body>', refresh_script + b'</body>', 1)
+                # Replace closing body tag (case-insensitive)
+                body_tag = b'</body>'
+                body_position = content.lower().rfind(b'</body>')
+                if body_position != -1:
+                    updated_content = content[:body_position] + refresh_script + content[body_position:]
+                else:
+                    # Fallback: append at end of file if no body tag found
+                    updated_content = content + refresh_script
                 
                 # Send headers
                 self.send_response(200)
@@ -126,18 +132,25 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     @classmethod
     def send_refresh_event(cls):
         """Send refresh event to all connected clients"""
-        refresh_message = b'data: reload\n\n'
+        refresh_message = b'event: reload\ndata: true\n\n'
         disconnected_clients = set()
+        connected_count = 0
         
         for client in cls.clients.copy():
             try:
                 client.write(refresh_message)
                 client.flush()
+                connected_count += 1
             except:
                 disconnected_clients.add(client)
         
         # Remove disconnected clients
         cls.clients -= disconnected_clients
+        
+        if connected_count > 0:
+            print(f"🔄 Browser refresh events sent to {connected_count} client(s)")
+        else:
+            print("⚠️  No connected browsers to refresh")
 
 
 def start_http_server(port):
