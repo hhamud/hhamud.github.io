@@ -9,7 +9,6 @@ import os
 import sys
 import time
 import subprocess
-import argparse
 import glob
 import threading
 import socket
@@ -160,14 +159,14 @@ def start_http_server(port):
         # Check if public directory exists
         if not os.path.exists(PUBLIC_DIR):
             print(f"⚠️  Public directory {PUBLIC_DIR} does not exist")
-            print("💡 Run with --initial-build to create it")
+            print("💡 Running initial build to create it...")
             return
         
         # Create server
         with socketserver.TCPServer(("", port), CustomHTTPRequestHandler) as httpd:
             print(f"🌐 HTTP server running at http://localhost:{port}")
             print(f"📁 Serving files from: {os.path.abspath(PUBLIC_DIR)}")
-            print(f"💡 Refresh your browser to see changes\n")
+            print(f"💡 Browser auto-refresh is enabled!\n")
             
             # Serve until interrupted
             httpd.serve_forever()
@@ -379,37 +378,27 @@ class BuildHandler(FileSystemEventHandler):
 
 def main():
     """Main function to handle file watcher and HTTP server setup"""
-    parser = argparse.ArgumentParser(description='Hot Reload: Automatic builds + browser refresh (watches .org, .el, .css, .js files and build.sh)')
-    parser.add_argument('--initial-build', action='store_true',
-                        help='Run initial build before starting to watch')
-    parser.add_argument('--no-server', action='store_true',
-                        help='Disable HTTP server (build watcher only)')
-    args = parser.parse_args()
 
     # Ensure build script is executable
     if os.path.exists(BUILD_SCRIPT):
         print(f"🔧 Making {BUILD_SCRIPT} executable...")
         os.chmod(BUILD_SCRIPT, 0o755)
 
-    # Run initial build if requested
-    if args.initial_build:
-        handler = BuildHandler()
-        print("🏗️  Running initial build...")
-        handler.run_build()
-        print("📋 Initial build completed\n")
+    # Always run initial build
+    handler = BuildHandler()
+    print("🏗️  Running initial build...")
+    handler.run_build()
+    print("📋 Initial build completed\n")
 
-    # Start HTTP server unless disabled
-    http_thread = None
-    if not args.no_server:
-        # Find available port
-        port = find_available_port(DEFAULT_PORT)
-        
-        # Start HTTP server in separate thread
-        http_thread = threading.Thread(target=start_http_server, args=(port,), daemon=True)
-        http_thread.start()
-        
-        # Give server time to start
-        time.sleep(0.5)
+    # Always start HTTP server
+    port = find_available_port(DEFAULT_PORT)
+    
+    # Start HTTP server in separate thread
+    http_thread = threading.Thread(target=start_http_server, args=(port,), daemon=True)
+    http_thread.start()
+    
+    # Give server time to start
+    time.sleep(0.5)
 
     # Create file watcher
     handler = BuildHandler()
@@ -419,8 +408,7 @@ def main():
     print(f"📁 Watching directory: {os.path.abspath(WATCH_DIR)}")
     print(f"🎯 Watching for: .org files, build.sh, .el files, and asset files (.css/.js)")
     print(f"🗑️  Skipping: Emacs lock files, build-generated files, all files in {PUBLIC_DIR}")
-    if not args.no_server:
-        print(f"🌐 Browser auto-refresh enabled - no manual refresh needed!")
+    print(f"🌐 Browser auto-refresh enabled - no manual refresh needed!")
     print("⌨️  Press Ctrl+C to stop\n")
     
     observer.schedule(handler, WATCH_DIR, recursive=True)
