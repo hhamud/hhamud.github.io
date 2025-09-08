@@ -309,3 +309,4 @@ If builds don't start when you modify files:
 
 Test change for hot reload
 Test change 2 for verification
+Test change for public directory removal
