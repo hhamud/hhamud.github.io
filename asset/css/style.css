@@ -2,8 +2,7 @@
 
 body {
         margin: 40px auto;
-        width: 610px;
-        max-width: 100%;
+        width: 60%;
         line-height: 1.6;
         background: white;
         color: black;
@@ -252,6 +251,7 @@ pre code:after {
 }
 hr {
   position: relative;
+  width: 100%;
   height: 20px;
   font-size: 0;
   line-height: 0;
@@ -260,14 +260,19 @@ hr {
   margin-bottom: 20px;
 }
 hr:after {
-  content: "----------------------------------------------------------------------------------------------------";
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
-  font-size: 14px;
-  line-height: 20px;
   width: 100%;
-  word-wrap: break-word;
+  height: 20px;
+  background: repeating-linear-gradient(
+    to right,
+    currentColor,
+    currentColor 10px,
+    transparent 10px,
+    transparent 20px
+  );
 }
 
 .markdown-ones ol > li:after {

@@ -175,6 +175,3 @@ Generate the site output
 #+begin_src emacs-lisp
 (org-publish-all t)
 #+end_src
-
-
--------
