@@ -15,6 +15,7 @@ import threading
 import socket
 import http.server
 import socketserver
+import shutil
 from pathlib import Path
 
 try:
@@ -262,6 +263,18 @@ class BuildHandler(FileSystemEventHandler):
                         sleep_time = min(2 ** attempt, 8)  # Max 8 seconds
                         print(f"⏳ Waiting {sleep_time} seconds before retry...")
                         time.sleep(sleep_time)
+                    
+                    # Remove public directory completely before building
+                    if os.path.exists(PUBLIC_DIR):
+                        print(f"🗑️  Removing existing public directory: {PUBLIC_DIR}")
+                        try:
+                            import shutil
+                            shutil.rmtree(PUBLIC_DIR)
+                            print(f"✅ Public directory removed successfully")
+                        except Exception as e:
+                            print(f"⚠️  Failed to remove public directory: {e}")
+                    else:
+                        print(f"📁 No existing public directory found")
                     
                     result = subprocess.run(
                         [BUILD_SCRIPT],
