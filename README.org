@@ -210,21 +210,12 @@ The complete, generated website will be in the `./public/` directory. You can op
 
 *Hot Reload Development*:
 
-For development with automatic builds:
-#+BEGIN_SRC sh
-uv run hotreload.py --initial-build
-#+END_SRC
-
-Or start watching without initial build:
+For development with automatic builds and browser refresh:
 #+BEGIN_SRC sh
 uv run hotreload.py
 #+END_SRC
 
-*Hot Reload Options*:
-- =--initial-build=: Run build once before starting to watch changes
-- =--no-server=: Build watcher only (disable HTTP server)
-
-The hot reload system automatically runs `./build.sh` when files change and serves the site via HTTP server at =http://localhost:8000=.
+The hot reload system automatically runs an initial build, runs `./build.sh` when files change, and serves the site via HTTP server at =http://localhost:8000= with automatic browser refresh. No flags needed!
 
 * Hot Reload System
 The project includes a sophisticated hot reload system for development productivity.
