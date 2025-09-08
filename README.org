@@ -307,3 +307,5 @@ If builds don't start when you modify files:
 └── README.org              # This file
 #+END_SRC
 
+Test change for hot reload
+Test change 2 for verification
