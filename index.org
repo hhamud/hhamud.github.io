@@ -41,5 +41,3 @@ A personal project for self teaching cryptography from its base primitives
 *** [[https://github.com/hhamud/sway-mode][Sway Mode]]
    An Emacs language major mode written in emacs-lisp for the sway smart contract language that includes syntax highlighting and integrations with forc, forc-lsp and forc-fmt.
 
-*** [[https://github.com/hhamud/Arima-Forecasting][Arima Forecasting]]
-   A Personal Project that applies an advanced statistical technique to predict future electricity prices for the British Market.
