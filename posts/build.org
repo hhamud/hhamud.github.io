@@ -48,7 +48,7 @@ Load the publishing system
 ** Setting the stylesheets
 To set the css style sheets in the HTML-HEAD.
 #+begin_src emacs-lisp
-(setq set-css "<link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/><link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/><script src=\"/asset/js/prism.js\"></script>")
+(setq set-css "<link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/><link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/><script src=\"/asset/js/prism.js\"></script><link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS Feed\" href=\"/feed.xml\">")
 #+end_src
 
 ** Editing the backend configuration functions
@@ -72,7 +72,6 @@ This code is originally from [[https://roygbyte.com/add_syntax_highlighting_to_a
                                            "python" "scheme" "clojure" "php" "html" "shell" "rust")))))
       (if (not lang) (format "<pre class=\"example\"%s>\n%s</pre>" label code)
         (format "<div class=\"org-src-container\">\n%s%s\n</div>"
-                ;; Build caption.
                 (let ((caption (org-export-get-caption src-block)))
                   (if (not caption) ""
                     (let ((listing-number
@@ -85,8 +84,6 @@ This code is originally from [[https://roygbyte.com/add_syntax_highlighting_to_a
                       (format "<label class=\"org-src-name\">%s%s</label>"
                               listing-number
                               (org-trim (org-export-data caption info))))))
-                ;; Contents.
-                ;; Changed HTML template to work with Prism.
                 (if klipsify
                     (format "<pre><code class=\"src language-%s\"%s%s>%s</code></pre>"
                             lang
@@ -114,7 +111,7 @@ Customise the HTML output by using our own scripts and styles without showing ou
       org-html-head set-css)
 #+end_src
 
-This is a wrapper function editing the original ~org-publish-to-html~ function
+This is a wrapper function editing the original ~org-publish-to-html~ function. It publishes the file only if it contains the line '#+SELECT_TAGS: publish'.
 #+begin_src emacs-lisp
 (defun my/org-publish (plist filename pub-dir)
   "Publish the file only if it contains the line '#+SELECT_TAGS: publish'."
@@ -127,7 +124,135 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
 #+end_src
 
 
-** Setting up org-publish
+** RSS Feed Generation
+
+Someone asked if I had an rss feed to my blog and my answer to that question is "yes I do now". It was not too hard to add RSS functionality to my blog, as all I needed to do was add a few more additional functions to this specific blog post and then publish it.
+
+
+This function takes the cleaned post content and extracts the first 3 sentences, truncating to 200 characters if needed.
+
+#+begin_src emacs-lisp
+(defun my/extract-description (content)
+  "Extract first few sentences from post content for RSS description."
+  (let* ((sentences (split-string content "[.!?]" t))
+         (first-sentences (cl-subseq sentences 0 (min 3 (length sentences))))
+         (description (string-join first-sentences ". ")))
+    (if (> (length description) 200)
+        (concat (substring description 0 197) "...")
+      (concat description "."))))
+#+end_src
+
+This function extracts the title and date from org headers, finds where the actual content starts (either after the first heading or after the title), and then extracts clean content while skipping org-specific syntax like properties drawers, directives, and headings.
+#+begin_src emacs-lisp
+(defun my/get-post-metadata (file-path)
+  "Extract title, date and clean content from org file."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (let ((title nil)
+          (date nil)
+          (content-start nil)
+          (clean-content ""))
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+TITLE:\\s-+\\(.+\\)$" nil t)
+        (setq title (match-string 1)))
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+DATE:\\s-+\\(.+\\)$" nil t)
+        (setq date (match-string 1)))
+      
+      (cond 
+       ((re-search-forward "^\\*+\\s-+" nil t)
+        (forward-line 1)
+        (setq content-start (point)))
+       ((re-search-forward "^#\\+title:" nil t)
+        (forward-line 1)
+        (setq content-start (point)))
+       (t
+        (setq content-start (point-min))))
+      
+      (let ((in-properties nil))
+        (when content-start
+          (goto-char content-start)
+          (while (not (eobp))
+            (let ((line (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+              (cond
+               ((string-match-p "^\\s-*:PROPERTIES:" line)
+                (setq in-properties t))
+               ((string-match-p "^\\s-*:END:" line)
+                (setq in-properties nil))
+               ((and (not in-properties)
+                     (not (string-match-p "^#\\+" line))
+                     (not (string-match-p "^\\s-*$" line))
+                     (not (string-match-p "^\\*" line)))
+                (setq clean-content (concat clean-content line " ")))))
+            (forward-line 1))
+          (setq clean-content (replace-regexp-in-string "\\s-+" " " clean-content))
+          (setq clean-content (string-trim clean-content))))
+        
+      (list :title title :date date :file file-path :content clean-content))))
+#+end_src
+
+
+This function processes all org files in the posts directory, extracts their metadata and content, and generates a valid RSS 2.0 XML feed with proper formatting and auto-discovery links.
+#+begin_src emacs-lisp
+(defun my/generate-rss-feed ()
+  "Generate RSS feed from all posts."
+  (let* ((posts-dir "./posts")
+         (rss-file "./public/feed.xml")
+         (base-url "https://hamzahamud.com")
+         (posts (directory-files posts-dir t "\\.org$"))
+         (rss-items nil))
+    
+    (dolist (post posts)
+      (unless (string-match-p "posts.org" post)
+        (let* ((metadata (my/get-post-metadata post))
+               (title (plist-get metadata :title))
+               (date (plist-get metadata :date))
+               (content (plist-get metadata :content))
+               (filename (file-name-base post))
+               (url (concat base-url "/posts/" filename ".html")))
+          
+          (when (and title content)
+            (push (list :title title 
+                       :date (or date (format-time-string "%Y-%m-%d"))
+                       :url url
+                       :description (my/extract-description content))
+                  rss-items)))))
+    
+    (with-temp-buffer
+      (insert "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+      (insert "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n")
+      (insert "<channel>\n")
+      (insert "<title>Hamza Hamud</title>\n")
+      (insert "<link>" base-url "</link>\n")
+      (insert "<description>Software Developer | GNU Emacs Hacker | Hobbiest</description>\n")
+      (insert "<language>en-us</language>\n")
+      (insert "<lastBuildDate>" (format-time-string "%a, %d %b %Y %H:%M:%S %z") "</lastBuildDate>\n")
+      (insert "<atom:link href=\"" base-url "/feed.xml\" rel=\"self\" type=\"application/rss+xml\" />\n")
+      
+      (dolist (item (reverse rss-items))
+        (insert "<item>\n")
+        (insert "<title>" (plist-get item :title) "</title>\n")
+        (insert "<link>" (plist-get item :url) "</link>\n")
+        (insert "<guid isPermaLink=\"true\">" (plist-get item :url) "</guid>\n")
+        (insert "<description><![CDATA[" (plist-get item :description) "]]></description>\n")
+        (insert "<pubDate>" (plist-get item :date) "</pubDate>\n")
+        (insert "</item>\n"))
+      
+      (insert "</channel>\n")
+      (insert "</rss>\n")
+      
+      (write-region (point-min) (point-max) rss-file))))
+#+end_src
+
+This wrapper function ensures that the RSS feed is regenerated every time a file is published, keeping the feed up to date with the latest posts.
+#+begin_src emacs-lisp
+(defun my/publish-with-rss (plist filename pub-dir)
+  "Publish file and regenerate RSS feed."
+  (my/org-publish plist filename pub-dir)
+  (my/generate-rss-feed))
+#+end_src
+
+This configuration defines the publishing projects for posts, pages, and static assets, using the RSS-aware publishing function to ensure feeds are updated automatically.
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
       (list
@@ -135,7 +260,7 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
        (list "posts"
              :recursive nil
              :base-directory "./posts"
-             :publishing-function 'my/org-publish
+             :publishing-function 'my/publish-with-rss
              :publishing-directory "./public/posts"
              :with-email nil
              :auto-sitemap t
@@ -150,7 +275,7 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
              :recursive nil
              :exclude "README.org"
              :base-directory "./"
-             :publishing-function 'my/org-publish
+             :publishing-function 'my/publish-with-rss
              :publishing-directory "./public/"
              :with-email nil
              :with-creator t
@@ -170,8 +295,8 @@ This is a wrapper function editing the original ~org-publish-to-html~ function
 ))
 #+end_src
 
-
-Generate the site output
+This final step publishes all content and generates the RSS feed to ensure everything is up to date.
 #+begin_src emacs-lisp
 (org-publish-all t)
+(my/generate-rss-feed)
 #+end_src
