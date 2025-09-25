@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Using a Blog post as build instructions</title>
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" type="text/css" href="/asset/css/style.css"/><link rel="stylesheet" href="/asset/css/prism.css"/><script src="/asset/js/prism.js"></script>
+<link rel="stylesheet" type="text/css" href="/asset/css/style.css"/><link rel="stylesheet" href="/asset/css/prism.css"/><script src="/asset/js/prism.js"></script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml">
 </head>
 <body>
 <div id="content" class="content">
@@ -16,20 +16,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgea0d260">The why</a></li>
-<li><a href="#org3e7007d">Packages</a></li>
-<li><a href="#org41dbc48">Setting the stylesheets</a></li>
-<li><a href="#org7fdedbc">Editing the backend configuration functions</a></li>
-<li><a href="#org6078618">Setting up org-publish</a></li>
+<li><a href="#org764b85e">The why</a></li>
+<li><a href="#orge109dfb">Packages</a></li>
+<li><a href="#orga3b361b">Setting the stylesheets</a></li>
+<li><a href="#orgbc09755">Editing the backend configuration functions</a></li>
+<li><a href="#orgd2ac7f8">RSS Feed Generation</a></li>
 </ul>
 </div>
 </div>
 <p>
 <i>I will be continually updating and editing this blog post as I grow this website so consider this to be a small forever post.</i>
 </p>
-<div id="outline-container-orgea0d260" class="outline-2">
-<h2 id="orgea0d260">The why</h2>
-<div class="outline-text-2" id="text-orgea0d260">
+<div id="outline-container-org764b85e" class="outline-2">
+<h2 id="org764b85e">The why</h2>
+<div class="outline-text-2" id="text-org764b85e">
 <p>
 I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish. Why not try and use the literal programming feature of Org to have the actual build instructions for org-publish as an actual blog post.
 </p>
@@ -55,9 +55,9 @@ This specific site uses this blog post, a shell script and github pages to actua
 </p>
 </div>
 </div>
-<div id="outline-container-org3e7007d" class="outline-2">
-<h2 id="org3e7007d">Packages</h2>
-<div class="outline-text-2" id="text-org3e7007d">
+<div id="outline-container-orge109dfb" class="outline-2">
+<h2 id="orge109dfb">Packages</h2>
+<div class="outline-text-2" id="text-orge109dfb">
 <p>
 Set the packages into a hidden folder
 </p>
@@ -96,21 +96,21 @@ Load the publishing system
 </div>
 </div>
 </div>
-<div id="outline-container-org41dbc48" class="outline-2">
-<h2 id="org41dbc48">Setting the stylesheets</h2>
-<div class="outline-text-2" id="text-org41dbc48">
+<div id="outline-container-orga3b361b" class="outline-2">
+<h2 id="orga3b361b">Setting the stylesheets</h2>
+<div class="outline-text-2" id="text-orga3b361b">
 <p>
 To set the css style sheets in the HTML-HEAD.
 </p>
 <div class="org-src-container">
-<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> set-css <span style="font-style: italic;">"&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/&gt;&lt;link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/&gt;&lt;script src=\"/asset/js/prism.js\"&gt;&lt;/script&gt;"</span>)
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> set-css <span style="font-style: italic;">"&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/asset/css/style.css\"/&gt;&lt;link rel=\"stylesheet\" href=\"/asset/css/prism.css\"/&gt;&lt;script src=\"/asset/js/prism.js\"&gt;&lt;/script&gt;&lt;link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS Feed\" href=\"/feed.xml\"&gt;"</span>)
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org7fdedbc" class="outline-2">
-<h2 id="org7fdedbc">Editing the backend configuration functions</h2>
-<div class="outline-text-2" id="text-org7fdedbc">
+<div id="outline-container-orgbc09755" class="outline-2">
+<h2 id="orgbc09755">Editing the backend configuration functions</h2>
+<div class="outline-text-2" id="text-orgbc09755">
 <p>
 This overrides the default back-end filter for the <code>src-block</code> and changes the HTML template. This will also change the class to match Prism’s recommendations, which is language-*, where * is the language.
 </p>
@@ -134,8 +134,7 @@ This code is originally from <a href="https://roygbyte.com/add_syntax_highlighti
                                            <span style="font-style: italic;">"python"</span> <span style="font-style: italic;">"scheme"</span> <span style="font-style: italic;">"clojure"</span> <span style="font-style: italic;">"php"</span> <span style="font-style: italic;">"html"</span> <span style="font-style: italic;">"shell"</span> <span style="font-style: italic;">"rust"</span>)))))
       (<span style="font-weight: bold;">if</span> (not lang) (format <span style="font-style: italic;">"&lt;pre class=\"example\"%s&gt;\n%s&lt;/pre&gt;"</span> label code)
         (format <span style="font-style: italic;">"&lt;div class=\"org-src-container\"&gt;\n%s%s\n&lt;/div&gt;"</span>
-                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Build caption.
-</span>                (<span style="font-weight: bold;">let</span> ((caption (org-export-get-caption src-block)))
+                (<span style="font-weight: bold;">let</span> ((caption (org-export-get-caption src-block)))
                   (<span style="font-weight: bold;">if</span> (not caption) <span style="font-style: italic;">""</span>
                     (<span style="font-weight: bold;">let</span> ((listing-number
                            (format
@@ -147,9 +146,7 @@ This code is originally from <a href="https://roygbyte.com/add_syntax_highlighti
                       (format <span style="font-style: italic;">"&lt;label class=\"org-src-name\"&gt;%s%s&lt;/label&gt;"</span>
                               listing-number
                               (org-trim (org-export-data caption info))))))
-                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Contents.
-</span>                <span style="font-weight: bold; font-style: italic;">;; </span><span style="font-weight: bold; font-style: italic;">Changed HTML template to work with Prism.
-</span>                (<span style="font-weight: bold;">if</span> klipsify
+                (<span style="font-weight: bold;">if</span> klipsify
                     (format <span style="font-style: italic;">"&lt;pre&gt;&lt;code class=\"src language-%s\"%s%s&gt;%s&lt;/code&gt;&lt;/pre&gt;"</span>
                             lang
                             label
@@ -184,7 +181,7 @@ Customise the HTML output by using our own scripts and styles without showing ou
 </div>
 
 <p>
-This is a wrapper function editing the original <code>org-publish-to-html</code> function
+This is a wrapper function editing the original <code>org-publish-to-html</code> function. It publishes the file only if it contains the line '#+SELECT<sub>TAGS</sub>: publish'.
 </p>
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/org-publish</span> (plist filename pub-dir)
@@ -199,9 +196,152 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
 </div>
 </div>
 </div>
-<div id="outline-container-org6078618" class="outline-2">
-<h2 id="org6078618">Setting up org-publish</h2>
-<div class="outline-text-2" id="text-org6078618">
+<div id="outline-container-orgd2ac7f8" class="outline-2">
+<h2 id="orgd2ac7f8">RSS Feed Generation</h2>
+<div class="outline-text-2" id="text-orgd2ac7f8">
+<p>
+Someone asked if I had an rss feed to my blog and my answer to that question is "yes I do now". It was not too hard to add RSS functionality to my blog, as all I needed to do was add a few more additional functions to this specific blog post and then publish it.
+</p>
+
+
+<p>
+This function takes the cleaned post content and extracts the first 3 sentences, truncating to 200 characters if needed.
+</p>
+
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/extract-description</span> (content)
+  <span style="font-style: italic;">"Extract first few sentences from post content for RSS description."</span>
+  (<span style="font-weight: bold;">let*</span> ((sentences (split-string content <span style="font-style: italic;">"[.!?]"</span> t))
+         (first-sentences (cl-subseq sentences 0 (min 3 (length sentences))))
+         (description (string-join first-sentences <span style="font-style: italic;">". "</span>)))
+    (<span style="font-weight: bold;">if</span> (&gt; (length description) 200)
+        (concat (substring description 0 197) <span style="font-style: italic;">"..."</span>)
+      (concat description <span style="font-style: italic;">"."</span>))))
+</code></pre>
+</div>
+
+<p>
+This function extracts the title and date from org headers, finds where the actual content starts (either after the first heading or after the title), and then extracts clean content while skipping org-specific syntax like properties drawers, directives, and headings.
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/get-post-metadata</span> (file-path)
+  <span style="font-style: italic;">"Extract title, date and clean content from org file."</span>
+  (<span style="font-weight: bold;">with-temp-buffer</span>
+    (insert-file-contents file-path)
+    (<span style="font-weight: bold;">let</span> ((title nil)
+          (date nil)
+          (content-start nil)
+          (clean-content <span style="font-style: italic;">""</span>))
+      (goto-char (point-min))
+      (<span style="font-weight: bold;">when</span> (re-search-forward <span style="font-style: italic;">"^#\\+TITLE:\\s-+</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">(</span><span style="font-style: italic;">.+</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">)</span><span style="font-style: italic;">$"</span> nil t)
+        (<span style="font-weight: bold;">setq</span> title (match-string 1)))
+      (goto-char (point-min))
+      (<span style="font-weight: bold;">when</span> (re-search-forward <span style="font-style: italic;">"^#\\+DATE:\\s-+</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">(</span><span style="font-style: italic;">.+</span><span style="font-weight: bold; font-style: italic;">\\</span><span style="font-weight: bold; font-style: italic;">)</span><span style="font-style: italic;">$"</span> nil t)
+        (<span style="font-weight: bold;">setq</span> date (match-string 1)))
+
+      (<span style="font-weight: bold;">cond</span> 
+       ((re-search-forward <span style="font-style: italic;">"^\\*+\\s-+"</span> nil t)
+        (forward-line 1)
+        (<span style="font-weight: bold;">setq</span> content-start (point)))
+       ((re-search-forward <span style="font-style: italic;">"^#\\+title:"</span> nil t)
+        (forward-line 1)
+        (<span style="font-weight: bold;">setq</span> content-start (point)))
+       (t
+        (<span style="font-weight: bold;">setq</span> content-start (point-min))))
+
+      (<span style="font-weight: bold;">let</span> ((in-properties nil))
+        (<span style="font-weight: bold;">when</span> content-start
+          (goto-char content-start)
+          (<span style="font-weight: bold;">while</span> (not (eobp))
+            (<span style="font-weight: bold;">let</span> ((line (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+              (<span style="font-weight: bold;">cond</span>
+               ((string-match-p <span style="font-style: italic;">"^\\s-*:PROPERTIES:"</span> line)
+                (<span style="font-weight: bold;">setq</span> in-properties t))
+               ((string-match-p <span style="font-style: italic;">"^\\s-*:END:"</span> line)
+                (<span style="font-weight: bold;">setq</span> in-properties nil))
+               ((<span style="font-weight: bold;">and</span> (not in-properties)
+                     (not (string-match-p <span style="font-style: italic;">"^#\\+"</span> line))
+                     (not (string-match-p <span style="font-style: italic;">"^\\s-*$"</span> line))
+                     (not (string-match-p <span style="font-style: italic;">"^\\*"</span> line)))
+                (<span style="font-weight: bold;">setq</span> clean-content (concat clean-content line <span style="font-style: italic;">" "</span>)))))
+            (forward-line 1))
+          (<span style="font-weight: bold;">setq</span> clean-content (replace-regexp-in-string <span style="font-style: italic;">"\\s-+"</span> <span style="font-style: italic;">" "</span> clean-content))
+          (<span style="font-weight: bold;">setq</span> clean-content (string-trim clean-content))))
+
+      (list <span style="font-weight: bold;">:title</span> title <span style="font-weight: bold;">:date</span> date <span style="font-weight: bold;">:file</span> file-path <span style="font-weight: bold;">:content</span> clean-content))))
+</code></pre>
+</div>
+
+
+<p>
+This function processes all org files in the posts directory, extracts their metadata and content, and generates a valid RSS 2.0 XML feed with proper formatting and auto-discovery links.
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/generate-rss-feed</span> ()
+  <span style="font-style: italic;">"Generate RSS feed from all posts."</span>
+  (<span style="font-weight: bold;">let*</span> ((posts-dir <span style="font-style: italic;">"./posts"</span>)
+         (rss-file <span style="font-style: italic;">"./public/feed.xml"</span>)
+         (base-url <span style="font-style: italic;">"https://hamzahamud.com"</span>)
+         (posts (directory-files posts-dir t <span style="font-style: italic;">"\\.org$"</span>))
+         (rss-items nil))
+
+    (<span style="font-weight: bold;">dolist</span> (post posts)
+      (<span style="font-weight: bold;">unless</span> (string-match-p <span style="font-style: italic;">"posts.org"</span> post)
+        (<span style="font-weight: bold;">let*</span> ((metadata (my/get-post-metadata post))
+               (title (plist-get metadata <span style="font-weight: bold;">:title</span>))
+               (date (plist-get metadata <span style="font-weight: bold;">:date</span>))
+               (content (plist-get metadata <span style="font-weight: bold;">:content</span>))
+               (filename (file-name-base post))
+               (url (concat base-url <span style="font-style: italic;">"/posts/"</span> filename <span style="font-style: italic;">".html"</span>)))
+
+          (<span style="font-weight: bold;">when</span> (<span style="font-weight: bold;">and</span> title content)
+            (<span style="font-weight: bold;">push</span> (list <span style="font-weight: bold;">:title</span> title 
+                       <span style="font-weight: bold;">:date</span> (<span style="font-weight: bold;">or</span> date (format-time-string <span style="font-style: italic;">"%Y-%m-%d"</span>))
+                       <span style="font-weight: bold;">:url</span> url
+                       <span style="font-weight: bold;">:description</span> (my/extract-description content))
+                  rss-items)))))
+
+    (<span style="font-weight: bold;">with-temp-buffer</span>
+      (insert <span style="font-style: italic;">"&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\"&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;channel&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;title&gt;Hamza Hamud&lt;/title&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;link&gt;"</span> base-url <span style="font-style: italic;">"&lt;/link&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;description&gt;Software Developer | GNU Emacs Hacker | Hobbiest&lt;/description&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;language&gt;en-us&lt;/language&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;lastBuildDate&gt;"</span> (format-time-string <span style="font-style: italic;">"%a, %d %b %Y %H:%M:%S %z"</span>) <span style="font-style: italic;">"&lt;/lastBuildDate&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;atom:link href=\""</span> base-url <span style="font-style: italic;">"/feed.xml\" rel=\"self\" type=\"application/rss+xml\" /&gt;\n"</span>)
+
+      (<span style="font-weight: bold;">dolist</span> (item (reverse rss-items))
+        (insert <span style="font-style: italic;">"&lt;item&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;title&gt;"</span> (plist-get item <span style="font-weight: bold;">:title</span>) <span style="font-style: italic;">"&lt;/title&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;link&gt;"</span> (plist-get item <span style="font-weight: bold;">:url</span>) <span style="font-style: italic;">"&lt;/link&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;guid isPermaLink=\"true\"&gt;"</span> (plist-get item <span style="font-weight: bold;">:url</span>) <span style="font-style: italic;">"&lt;/guid&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;description&gt;&lt;![CDATA["</span> (plist-get item <span style="font-weight: bold;">:description</span>) <span style="font-style: italic;">"]]&gt;&lt;/description&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;pubDate&gt;"</span> (plist-get item <span style="font-weight: bold;">:date</span>) <span style="font-style: italic;">"&lt;/pubDate&gt;\n"</span>)
+        (insert <span style="font-style: italic;">"&lt;/item&gt;\n"</span>))
+
+      (insert <span style="font-style: italic;">"&lt;/channel&gt;\n"</span>)
+      (insert <span style="font-style: italic;">"&lt;/rss&gt;\n"</span>)
+
+      (write-region (point-min) (point-max) rss-file))))
+</code></pre>
+</div>
+
+<p>
+This wrapper function ensures that the RSS feed is regenerated every time a file is published, keeping the feed up to date with the latest posts.
+</p>
+<div class="org-src-container">
+<pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">my/publish-with-rss</span> (plist filename pub-dir)
+  <span style="font-style: italic;">"Publish file and regenerate RSS feed."</span>
+  (my/org-publish plist filename pub-dir)
+  (my/generate-rss-feed))
+</code></pre>
+</div>
+
+<p>
+This configuration defines the publishing projects for posts, pages, and static assets, using the RSS-aware publishing function to ensure feeds are updated automatically.
+</p>
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(<span style="font-weight: bold;">setq</span> org-publish-project-alist
       (list
@@ -209,7 +349,7 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
        (list <span style="font-style: italic;">"posts"</span>
              <span style="font-weight: bold;">:recursive</span> nil
              <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./posts"</span>
-             <span style="font-weight: bold;">:publishing-function</span> 'my/org-publish
+             <span style="font-weight: bold;">:publishing-function</span> 'my/publish-with-rss
              <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public/posts"</span>
              <span style="font-weight: bold;">:with-email</span> nil
              <span style="font-weight: bold;">:auto-sitemap</span> t
@@ -224,7 +364,7 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
              <span style="font-weight: bold;">:recursive</span> nil
              <span style="font-weight: bold;">:exclude</span> <span style="font-style: italic;">"README.org"</span>
              <span style="font-weight: bold;">:base-directory</span> <span style="font-style: italic;">"./"</span>
-             <span style="font-weight: bold;">:publishing-function</span> 'my/org-publish
+             <span style="font-weight: bold;">:publishing-function</span> 'my/publish-with-rss
              <span style="font-weight: bold;">:publishing-directory</span> <span style="font-style: italic;">"./public/"</span>
              <span style="font-weight: bold;">:with-email</span> nil
              <span style="font-weight: bold;">:with-creator</span> t
@@ -245,12 +385,12 @@ This is a wrapper function editing the original <code>org-publish-to-html</code>
 </code></pre>
 </div>
 
-
 <p>
-Generate the site output
+This final step publishes all content and generates the RSS feed to ensure everything is up to date.
 </p>
 <div class="org-src-container">
 <pre><code class="src language-emacs-lisp">(org-publish-all t)
+(my/generate-rss-feed)
 </code></pre>
 </div>
 </div>
