@@ -1,0 +1,8 @@
+#+title: A Poem
+#+PROPERTY: header-args :tangle ../build.el
+
+Dawn’s cries, then the hush
+
+the steady hand guides the spoon
+
+Patience, Gratitude
