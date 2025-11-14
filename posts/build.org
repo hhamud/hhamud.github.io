@@ -128,7 +128,6 @@ This is a wrapper function editing the original ~org-publish-to-html~ function. 
 
 Someone asked if I had an rss feed to my blog and my answer to that question is "yes I do now". It was not too hard to add RSS functionality to my blog, as all I needed to do was add a few more additional functions to this specific blog post and then publish it.
 
-
 This function takes the cleaned post content and extracts the first 3 sentences, truncating to 200 characters if needed.
 
 #+begin_src emacs-lisp
