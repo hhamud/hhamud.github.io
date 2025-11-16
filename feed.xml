@@ -5,49 +5,49 @@
 <link>https://hamzahamud.com</link>
 <description>Software Developer | GNU Emacs Hacker | Hobbiest</description>
 <language>en-us</language>
-<lastBuildDate>Fri, 14 Nov 2025 16:08:09 +0000</lastBuildDate>
+<lastBuildDate>Sun, 16 Nov 2025 16:08:47 +0000</lastBuildDate>
 <atom:link href="https://hamzahamud.com/feed.xml" rel="self" type="application/rss+xml" />
 <item>
 <title>Exploring the World of HTLCs: Challenges and Innovations</title>
 <link>https://hamzahamud.com/posts/HTLC.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/HTLC.html</guid>
 <description><![CDATA[Hash time locked contracts are a type of smart contract, that creates a time based escrow that users can trade tokens in a peer-to-peer fashion, by revealing the secret to a hash to unlock the toke...]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 <item>
 <title>Using a Blog post as build instructions</title>
 <link>https://hamzahamud.com/posts/build.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/build.html</guid>
 <description><![CDATA[I had an interesting thought as I was switching my website away from using hugo as the static site generator to using org-publish.  Why not try and use the literal programming feature of Org to hav...]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 <item>
 <title>A Poem</title>
 <link>https://hamzahamud.com/posts/carer.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/carer.html</guid>
 <description><![CDATA[Dawn’s cries, then the hush the steady hand guides the spoon Patience, Gratitude.]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 <item>
 <title>How to create a Clojure Monorepo</title>
 <link>https://hamzahamud.com/posts/clojure_monorepo.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/clojure_monorepo.html</guid>
 <description><![CDATA[Suppose that you want to create a basic clojure monorepo without using large frameworks such as [[https://opensource. google/projects/bazel][Bazel]] or [[https://github. com/polyfy/polylith][Polyli...]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 <item>
 <title>Finding your long lost hot wallet</title>
 <link>https://hamzahamud.com/posts/long-lost-wallet.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/long-lost-wallet.html</guid>
 <description><![CDATA[Let's say that you did something silly like use a spare old computer for all your hot wallet needs and forget to back up the mnemonic seed phrase.  This blog is for you, fortunately someone else di...]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 <item>
 <title>Notes on Tree-sitter</title>
 <link>https://hamzahamud.com/posts/tree-sitter.html</link>
 <guid isPermaLink="true">https://hamzahamud.com/posts/tree-sitter.html</guid>
 <description><![CDATA[I decided to sit down and write a [[https://github. com/hhamud/tree-sitter-noir][tree-sitter plugin]] and [[https://github. com/hhamud/noir-ts-mode][Emacs mode]] for both tree-sitter and [[https://...]]></description>
-<pubDate>2025-11-14</pubDate>
+<pubDate>2025-11-16</pubDate>
 </item>
 </channel>
 </rss>
