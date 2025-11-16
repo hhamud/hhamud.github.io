@@ -10,7 +10,7 @@
 
 Hi! I'm Hamza, I enjoy trying out different things suited to my tastes, currently that is just programming and cryptography.
 
-For any inquiries, please contact me via [[mailto:self@hamzahamud.com][email.]]
+For any inquiries, please contact me via [[mailto:info@adalresearch.com][email.]]
 :SEPARATOR:
 -----
 :END:
@@ -40,4 +40,3 @@ A personal project for self teaching cryptography from its base primitives
 
 *** [[https://github.com/hhamud/sway-mode][Sway Mode]]
    An Emacs language major mode written in emacs-lisp for the sway smart contract language that includes syntax highlighting and integrations with forc, forc-lsp and forc-fmt.
-
