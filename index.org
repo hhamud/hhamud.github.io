@@ -5,9 +5,6 @@
 #+HTML_HEAD_EXTRA: .title { display: none; }
 #+HTML_HEAD_EXTRA: </style>
 
-
-* About Me
-
 Hi! I'm Hamza, I enjoy trying out different things suited to my tastes, currently that is just programming and cryptography.
 
 For any inquiries, please contact me via [[mailto:info@adalresearch.com][email.]]
@@ -24,19 +21,17 @@ For any inquiries, please contact me via [[mailto:info@adalresearch.com][email.]
 
 * Projects
 
-** Current Projects
-*** [[https://github.com/hhamud/Zuer][Zuer]]
+** [[https://github.com/hhamud/Zuer][Zuer]] :TODO:
 A personal project for self teaching cryptography from its base primitives
 
-** Completed Projects
-*** [[https://github.com/hhamud/Noir-ts-mode][Noir ts mode]]
+** [[https://github.com/hhamud/Noir-ts-mode][Noir ts mode]] :DONE:
    An Emacs language major mode written in Emacs-lisp for the Noir smart contract language that uses the tree-sitter api, includes syntax highlighting.
 
-*** [[https://github.com/hhamud/Noir-mode][Noir mode]]
+** [[https://github.com/hhamud/Noir-mode][Noir mode]] :DONE:
    An Emacs language major mode written in emacs-lisp for the Noir smart contract language that includes syntax highlighting.
 
-*** [[https://github.com/hhamud/tree-sitter-Noir][Tree-sitter-Noir]]
+** [[https://github.com/hhamud/tree-sitter-Noir][Tree-sitter-Noir]] :DONE:
    Treesitter plugin for Noir language, (a ZK circuit writing language).
 
-*** [[https://github.com/hhamud/sway-mode][Sway Mode]]
+** [[https://github.com/hhamud/sway-mode][Sway Mode]] :DONE:
    An Emacs language major mode written in emacs-lisp for the sway smart contract language that includes syntax highlighting and integrations with forc, forc-lsp and forc-fmt.

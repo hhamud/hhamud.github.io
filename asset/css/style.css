@@ -1,355 +1,404 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@bash200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap');
+
+:root {
+  /* Emacs Nano Light Theme Palette (Material Design inspired) */
+  --nano-bg: #FAFAFA;
+  /* Background */
+  --nano-fg: #37474F;
+  /* Foreground (Default Text) */
+
+  /* Semantic Faces */
+  --nano-critical: #E57373;
+  /* Red - Immediate action */
+  --nano-popout: #FFB74D;
+  /* Amber/Orange - Attention */
+  --nano-strong: #37474F;
+  /* Bold/Header - Structural */
+  --nano-salient: #64B5F6;
+  /* Blue - Links/Important */
+  --nano-faded: #90A4AE;
+  /* Grey - Comments/Metadata */
+  --nano-subtle: #ECEFF1;
+  /* Light Grey - Backgrounds */
+
+  /* Spacing & Layout */
+  --nano-spacing: 20px;
+  --nano-max-width: 800px;
+}
 
 body {
-        margin: 40px auto;
-        width: 60%;
-        line-height: 1.6;
-        background: white;
-        color: black;
-        padding: 0 10px;
-        font-family: "JetBrains Mono";
-        font-weight: 500;
-        /* Smooth the font a little bit, it's a
-         bit too bold on retina screens */
-        -webkit-font-smoothing: antialiased;
+  margin: 40px auto;
+  width: 90%;
+  max-width: var(--nano-max-width);
+  line-height: 1.6;
+  background: var(--nano-bg);
+  color: var(--nano-fg);
+  font-family: "Roboto Mono", monospace;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* --------------------------------------------------- */
-/* Make a nice input form with rounded corners and hover
- animations*/
+/* Headers - Strong Face */
+/* --------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Roboto Mono", monospace;
+  color: var(--nano-strong);
+  font-weight: 500;
+  /* Slightly bolder than body */
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2em;
+  border-bottom: 1px solid var(--nano-subtle);
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h3 {
+  font-size: 1.4em;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+}
+
+/* Remove old markdown decorations */
+h1:after,
+h6:before,
+h3:before,
+h4:before,
+h5:before,
+h6:before {
+  content: none;
+}
+
+/* ... (skipping unchanged parts) ... */
+
+/* --------------------------------------------------- */
+/* Tags */
+/* --------------------------------------------------- */
+.tag {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8em;
+  color: var(--nano-faded);
+  font-weight: normal;
+  /* Fixed width to ensure vertical alignment of colons */
+  width: 100px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.tag::before,
+.tag::after {
+  content: ":";
+  color: inherit;
+}
+
+/* --------------------------------------------------- */
+/* Links - Salient Face */
+/* --------------------------------------------------- */
+a {
+  cursor: pointer;
+  color: var(--nano-salient);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:visited {
+  color: var(--nano-salient);
+  /* Keep consistent */
+}
+
+a:hover {
+  color: var(--nano-popout);
+  /* Popout on hover */
+  background-color: transparent;
+  /* Remove old box effect */
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------- */
+/* Inputs & Buttons */
 /* --------------------------------------------------- */
 input {
-        padding: 10px 16px;
-        margin: 2px 0;
-        box-sizing: border-box;
-        border: 2px solid #dabebe;
-        border-radius: 6px;
-        background: #fffff4;
-        color: #3a1616;
-        -webkit-transition: 0.5s;
-        transition: 0.5s;
-        outline: none;
+  padding: 10px 16px;
+  margin: 2px 0;
+  box-sizing: border-box;
+  border: 1px solid var(--nano-faded);
+  border-radius: 4px;
+  background: white;
+  color: var(--nano-fg);
+  font-family: inherit;
+  outline: none;
 }
+
 input:focus {
-        border: 2px solid #3a1616;
+  border-color: var(--nano-salient);
 }
 
-/* --------------------------------------- */
-/* The button is very similar to the input */
-/* --------------------------------------- */
 .button {
-        background-color: #fffff4;
-        border: none;
-        color: black;
-        padding: 6px 14px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-        border: 2px solid #3a1616;
-        border-radius: 6px;
-}
-.button:hover {
-        background-color: #3a1616;
-        color: white;
+  background-color: var(--nano-subtle);
+  border: 1px solid var(--nano-faded);
+  color: var(--nano-fg);
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: inherit;
+  transition: background-color 0.2s;
 }
 
-/* ----------------------------------------------- */
-/* Various classes for messages of different kinds */
-/* ----------------------------------------------- */
+.button:hover {
+  background-color: var(--nano-salient);
+  color: white;
+  border-color: var(--nano-salient);
+}
+
+/* --------------------------------------------------- */
+/* Messages / Alerts */
+/* --------------------------------------------------- */
 .isa_info,
 .isa_success,
 .isa_warning,
 .isa_error {
-        width: 90%;
-        margin: 10px 0px;
-        padding: 12px;
+  width: 100%;
+  margin: 10px 0px;
+  padding: 12px;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
+
 .isa_info {
-        color: #00529b;
-        background-color: #bde5f8;
+  color: var(--nano-salient);
+  background-color: var(--nano-subtle);
+  border-left: 4px solid var(--nano-salient);
 }
+
 .isa_success {
-        color: #4f8a10;
-        background-color: #dff2bf;
+  color: #4CAF50;
+  /* Keep distinct green for success */
+  background-color: #E8F5E9;
+  border-left: 4px solid #4CAF50;
 }
+
 .isa_warning {
-        color: #9f6000;
-        background-color: #feefb3;
+  color: var(--nano-popout);
+  background-color: #FFF3E0;
+  border-left: 4px solid var(--nano-popout);
 }
+
 .isa_error {
-        color: #d8000c;
-        background-color: #ffd2d2;
+  color: var(--nano-critical);
+  background-color: #FFEBEE;
+  border-left: 4px solid var(--nano-critical);
 }
 
-h1,
-h2,
-h3 {
-        line-height: 1.2;
-        font-family: "JetBrains Mono";
-}
-
+/* --------------------------------------------------- */
+/* Images */
+/* --------------------------------------------------- */
 img {
-        width: 500px;
-        max-width: 100%;
-        border-radius: 10px;
-        text-align: center;
-}
-
-/* --------------------------------------------- */
-/* Bold hover animations on links and clickables */
-/* --------------------------------------------- */
-a {
-        cursor: pointer;
-        color: #217ab7;
-        line-height: inherit;
-        transition: .14s;
-}
-a:hover {
-        color: white;
-        background-color: #3297d3;
-}
-a:visited {
-        color: #43458b;
-        border-color: #43458b;
-}
-a:visited:hover {
-        color: white;
-        background-color: #9251ac;
-}
-
-pre {
-        font-family: "Jetbrains Mono", monospace;
-}
-
-::selection {
-        color: white;
-        background: #ff4081;
-}
-
-
-/* --------------------------------------------- */
-/*                  css                */
-/* --------------------------------------------- */
-
-code {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: normal;
-  font-style: normal;
-  font-family: "JetBrains Mono"
-  color: #333333;
-}
-footer {
-  float: none;
-  margin: 0;
-  padding: 0;
-}
-blockquote {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-h1 {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding: 20px 0 50px;
-  margin: 0;
-  overflow: hidden;
-}
-h1:after {
-  content: "====================================================================================================";
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-}
-h1 + * {
-  margin-top: 0;
-}
-h6 {
-  position: relative;
-  margin-bottom: 20px;
-}
-h6:before {
-  content: "## ";
-  display: inline;
-}
-h3:before {
-  content: "### ";
-}
-h4:before {
-  content: "#### ";
-}
-h5:before {
-  content: "##### ";
-}
-h6:before {
-  content: "###### ";
-}
-li {
-  position: relative;
+  max-width: 100%;
+  border-radius: 4px;
   display: block;
-  padding-left: 30px;
+  margin: 20px auto;
 }
-li:after {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-ul {
-  padding: 0
-}
-ul > li:after {
-  content: "*";
-}
-ol {
-  counter-reset: ol;
-}
-ol > li:after {
-  content: counter(ol) ".";
-  counter-increment: ol;
-}
+
+/* --------------------------------------------------- */
+/* Code & Pre - Faded/Subtle */
+/* --------------------------------------------------- */
 pre {
-  margin-left: 34px;
-  margin-left: 4ch;
+  font-family: "Roboto Mono", monospace;
+  background-color: var(--nano-subtle);
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 20px 0;
 }
-blockquote {
-  position: relative;
-  padding-left: 17px;
-  padding-left: 2ch;
-  overflow: hidden;
-}
-blockquote:after {
-  content: ">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";
-  white-space: pre;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 14px;
-  line-height: 20px;
-}
-strong:after {
-  content: "__";
-  display: inline;
-}
-em:after {
-  content: "*";
-  display: inline;
-}
+
 code {
-  font-weight: 100;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9em;
+  background-color: var(--nano-subtle);
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: var(--nano-fg);
 }
-code:after {
-  content: "`";
-  display: inline;
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
 }
+
 pre code:after {
   content: none;
 }
-hr {
-  position: relative;
-  width: 100%;
-  height: 20px;
-  font-size: 0;
-  line-height: 0;
-  overflow: hidden;
-  border: 0;
-  margin-bottom: 20px;
-}
-hr:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background: repeating-linear-gradient(
-    to right,
-    currentColor,
-    currentColor 10px,
-    transparent 10px,
-    transparent 20px
-  );
+
+/* --------------------------------------------------- */
+/* Blockquotes - Faded Face */
+/* --------------------------------------------------- */
+blockquote {
+  margin: 20px 0;
+  padding-left: 20px;
+  border-left: 4px solid var(--nano-faded);
+  color: var(--nano-faded);
+  font-style: italic;
 }
 
-.markdown-ones ol > li:after {
-  content: "1.";
+blockquote:after {
+  content: none;
+  /* Remove old ascii art */
 }
 
-/* footnotes */
-
-.footnotes {
-  border-top: 2px solid black;
-  padding-top: 10px;
-  width: 100%;
-  word-wrap: break-word;
+/* --------------------------------------------------- */
+/* Lists */
+/* --------------------------------------------------- */
+ul,
+ol {
+  padding-left: 20px;
 }
 
-.footnote-link {
-  display: inline-block; /* or 'inline' depending on your specific needs */
-  vertical-align: super;
-  font-size: smaller;
+li {
+  margin-bottom: 0.5em;
 }
 
-/* Assuming .footpara is your paragraph class */
-.footpara {
-  display: inline; /* or 'inline-block' if the paragraph is short and you want the footnote to be on the same line */
+li:after {
+  content: none;
+  /* Remove old decorations */
 }
 
-.footdef {
-  margin: 15px
-}
-
-
-/* NavBar */
-
-/* Styles for the entire navbar */
-.navbar {
-  overflow: hidden; /* Ensures the navbar does not overflow */
-}
-
-/* Styles for the list inside the navbar */
-.navbar ul {
-  list-style-type: none; /* Removes bullet points */
-  margin: 0; /* Removes default margin */
-  padding: 0; /* Removes default padding */
-  display: flex; /* Aligns items in a row */
-  justify-content: center; /* Centers the items horizontally */
-}
-
-/* Styles for each list item */
-.navbar li {
-  float: left; /* Floats each list item to the left */
-}
-
-/* remove the bullet list */
-.navbar ul > li:after {
+ul>li:after {
   content: none;
 }
 
-/* Styles for links in the navbar */
+ol>li:after {
+  content: none;
+}
+
+/* --------------------------------------------------- */
+/* Intro Section (Org Mode) */
+/* --------------------------------------------------- */
+.intro {
+  text-align: left;
+  margin-bottom: 60px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.2em;
+}
+
+.org-meta-line {
+  margin-bottom: 5px;
+}
+
+.org-keyword {
+  color: var(--nano-faded);
+}
+
+.org-value {
+  color: var(--nano-fg);
+}
+
+/* Make the title value stand out slightly more */
+.org-meta-line:first-child .org-value {
+  color: var(--nano-strong);
+  font-weight: bold;
+}
+
+/* --------------------------------------------------- */
+/* Navbar (Mode Line) */
+/* --------------------------------------------------- */
+.navbar {
+  background-color: var(--nano-subtle);
+  color: var(--nano-fg);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--nano-faded);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.9em;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.navbar li {
+  margin: 0;
+  /* Remove margin as space-evenly handles it */
+}
+
 .navbar a {
-  display: block; /* Makes the entire area clickable */
-  color: black; /* White text color */
-  text-align: center; /* Centers text */
-  padding: 14px 16px; /* Padding around the text */
-  text-decoration: none; /* Removes underline from links */
+  color: var(--nano-faded);
+  font-weight: 500;
+  padding: 5px 0;
 }
 
-.navbar a:hover, .navbar a:visited:hover {
-  background-color: white;
-  color: #3297d3;
+.navbar a:hover {
+  color: var(--nano-popout);
+  text-decoration: none;
+  background-color: transparent;
 }
 
-.intro p {
-  display: flex;
-  justify-content: center;
+/* --------------------------------------------------- */
+/* Footer */
+/* --------------------------------------------------- */
+footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--nano-subtle);
+  color: var(--nano-faded);
+  text-align: center;
+  font-size: 0.9em;
 }
 
-.intro h1 {
-  display: flex;
-  justify-content: center;
+/* --------------------------------------------------- */
+/* Selection */
+/* --------------------------------------------------- */
+::selection {
+  color: white;
+  background: var(--nano-popout);
+  /* Match link hover color (Orange) */
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--nano-subtle);
+  margin: 40px 0;
+}
+
+hr:after {
+  content: none;
+}
+
+/* --------------------------------------------------- */
+/* Tags */
+/* --------------------------------------------------- */
+.tag {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8em;
+  color: var(--nano-faded);
+  font-weight: normal;
+  margin-left: 10px;
+  vertical-align: middle;
 }
